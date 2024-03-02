@@ -1,0 +1,103 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        label{margin-bottom: 0 !important}
+    </style>
+    <!-- FullCalendar CSS -->
+    <!-- <link rel="stylesheet" href="/assets/frappe/frappe/public/js/lib/ffullcalendar.min.css"> -->
+
+    <!-- jQuery (required for FullCalendar) -->
+    <!-- <script src="/assets/jquery/jquery.min.js"></script> -->
+    
+    <!-- FullCalendar JavaScript -->
+    <!-- <script src="/assets/frappe/frappe/public/js/lib/fullcalendar.min.js"></script> -->
+</head>
+<body>
+    <!-- <h1>page</h1> -->
+    
+        <!-- <div style="display: flex; flex-direction: column; width: 250px; gap: 8px">
+
+            <label for="Employee">Select A Project:</label>
+            <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="project_select_for_all" onchange="selected_project_onload()">
+                <option value=""></option>
+            </select>
+          
+        </div> -->
+   
+    <div style="display: flex; flex-direction: row; gap: 8px">
+        <div>
+            <form style="display: flex; flex-direction: column; gap: 10px">
+                <label for="Project">Select A Project:</label>
+                <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="project_select" onchange="selected_project()">
+                    <option value=""></option>
+                </select>
+            
+                <label for="Task">Select A Task:</label>
+                <select type="text" placeholder="Select A Task" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="task" onchange="task_details()">
+                    <option value=""></option>
+                </select>
+                <label for="Start Date">Start Date:</label>
+                <input type="date" id="start_date" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;">
+
+                <label for="End Date">End Date:</label>
+                <input type="date" id="end_date" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;">
+
+                <label for="vehical">Vehicle:</label>
+                <select type="text" placeholder="Vehicle" id="vehical" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;">
+                <option value=""></option>
+                </select>
+            
+                <label for="kit">Kit:</label>
+                <select type="text" placeholder="Kit" id="kit" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;">
+                    <option value=""></option>
+                </select>
+            
+                <label for="Sub Task">Select Sub Task:</label>
+                <select type="text" placeholder="Sub Task" id="sub_task" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;">
+                <option value=""></option></select>
+
+                <label for="job Role">Select Job Role:</label>
+                <select type="text" placeholder="Job Role" id="job_role" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" onchange="get_employee()">
+                <option value=""></option></select>
+
+                <label for="Employee">Select A Employee:</label>
+                <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="employee_select" onchange="selected_employee()">
+                    <option value=""></option>
+                </select>
+            </form>
+            
+            <button onclick="myfunc()" style="margin-top: 10px;">Submit</button>
+        </div>
+       <div style="display: flex; flex-direction: column;width : 100%;  gap: 8px"> 
+        <div style="display: flex; flex-direction: row; width: 250px; gap: 8px; align-items: center;">
+        <div style="display: flex; flex-direction: column; width: 250px; gap: 8px">
+            <label for="Employee">Select A Project:</label>
+            <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="project_select_for_all" onchange="selected_project_onload()">
+                <option value=""></option>
+            </select>
+          
+        </div>
+        <div style="display: flex; flex-direction: row ; width: 250px; gap: 15px">
+            <div>
+            <label for="myCheckbox">show Task </label>
+            <input type="checkbox" id="myCheckbox" onclick="select_task()">
+            </div>
+            <div>
+            <label for="myCheckbox">show Employee </label>
+            <input type="checkbox" id="Employee_checkbox" onclick="select_emp()">
+            </div>
+            </div>
+         </div>
+         
+        
+        <div id="calendar" style="background-color: #fff; width : 100% ; margin-top: 20px ;"></div>
+    </div>
+    </div>
+    
+
+    
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+ "content": null,
+ "creation": "2024-03-02 11:29:52.319913",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2024-03-02 11:29:52.319913",
+ "modified_by": "Administrator",
+ "module": "HMWS Scheduling",
+ "name": "booking_page",
+ "owner": "Administrator",
+ "page_name": "booking_page",
+ "roles": [],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Booking Calendar"
+}
