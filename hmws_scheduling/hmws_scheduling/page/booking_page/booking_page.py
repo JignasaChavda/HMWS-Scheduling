@@ -42,6 +42,49 @@ def employee_leave(emp_id,s_dt,e_dt):
         end_date.append(i["to_date"])
     return {"leave_id":leave_list,"start_date":start_date,"end_date":end_date}
 
+@frappe.whitelist()
+def employee_leave_all(custom_employee_values):
+    # Assuming custom_employee_values is a JSON array of employee IDs
+
+    import json
+
+    # Convert the JSON array to a Python list
+    employee_ids = json.loads(custom_employee_values)
+
+    # Create a string with placeholders for the IN clause
+    placeholders = ', '.join(['%s'] * len(employee_ids)) if employee_ids else 'NULL'
+
+    # Execute the SQL query only if there are elements in the array
+    if employee_ids:
+        get_leave = frappe.db.sql("""
+            SELECT name, employee, from_date, to_date 
+            FROM `tabLeave Application` 
+            WHERE employee IN ({})
+        """.format(placeholders), tuple(employee_ids), as_dict=True)
+    else:
+        # If the array is empty, return an empty list
+        get_leave = []
+
+    # Print the result for debugging
+    print("Check the Booking", get_leave)
+
+    # Process the results and build the response
+    leave_list = []
+
+    for leave in get_leave:
+        leave_data = {
+            "leave_id": leave["name"],
+            "employee_id": leave["employee"],
+            "from_date": leave["from_date"],
+            "to_date": leave["to_date"]
+        }
+        leave_list.append(leave_data)
+
+    return {"leave_details": leave_list}
+
+
+
+
 
 @frappe.whitelist()
 def employee_booking(emp_id,s_dt,e_dt):
@@ -87,100 +130,89 @@ def get_expiry_data(emp_id, s_dt, e_dt):
 
 
 
-@frappe.whitelist()
-def get_certificate(emp_id, task,end_date,start_date):
-    # Your existing code here...
+# @frappe.whitelist()
+# def get_certificate(emp_id, task,end_date,start_date):
+#     # Your existing code here...
     
-    get_leave = frappe.db.sql("""
+#     get_leave = frappe.db.sql("""
+#         SELECT ec.checklist, e.name
+#         FROM tabTask e
+#         JOIN `tabChecklist` ec ON e.name = ec.parent
+#         WHERE e.name = %s
+#     """, (task), as_dict=True)
+
+#     leave_list = []
+#     employee_names_task = []  # Rename to employee_names_task to avoid conflicts
+    
+#     for i in get_leave:
+#         checklist_value = i["checklist"]
+#         if checklist_value:
+#             employee_names_task.append(i["name"])
+#             leave_list.append(checklist_value)
+#         else:
+#             leave_list.append(f"No Compliance Checklist for Task {task}")
+
+#     get_leave2 = frappe.db.sql("""
+#         SELECT ec.document_name, e.name
+#         FROM tabEmployee e
+#         JOIN `tabCompliance Checklist` ec ON e.name = ec.parent
+#         WHERE e.name = %s 
+#     """, (emp_id), as_dict=True)
+
+#     leave_list2 = []
+#     employee_names_emp = []  # Rename to employee_names_emp to avoid conflicts
+    
+#     for i in get_leave2:
+#         checklist_value_emp = i["document_name"]
+#         if checklist_value_emp:
+#             employee_names_emp.append(i["name"])
+#             leave_list2.append(checklist_value_emp)
+#         else:
+#             leave_list2.append(f"No Compliance Checklist for Employee {emp_id}")
+
+#     # Use set difference to find values in leave_list but not in leave_list2
+#     print("leave_list:", leave_list)
+#     print("leave_list2:", leave_list2)
+
+#     differences = set(leave_list) - set(leave_list2)
+#     print(differences)
+
+#     return {"employee_names_emp": employee_names_emp, "differences": list(differences)}
+
+
+
+@frappe.whitelist()
+def get_certificate(emp_id, task, end_date, start_date):
+    task_checklists = frappe.db.sql("""
         SELECT ec.checklist, e.name
         FROM tabTask e
         JOIN `tabChecklist` ec ON e.name = ec.parent
         WHERE e.name = %s
     """, (task), as_dict=True)
 
-    leave_list = []
-    employee_names_task = []  # Rename to employee_names_task to avoid conflicts
-    
-    for i in get_leave:
-        checklist_value = i["checklist"]
-        if checklist_value:
-            employee_names_task.append(i["name"])
-            leave_list.append(checklist_value)
-        else:
-            leave_list.append(f"No Compliance Checklist for Task {task}")
+    leave_list_task = [entry["checklist"] for entry in task_checklists]
+    employee_names_task = [entry["name"] for entry in task_checklists]
 
-    get_leave2 = frappe.db.sql("""
+    employee_checklists = frappe.db.sql("""
         SELECT ec.document_name, e.name
         FROM tabEmployee e
         JOIN `tabCompliance Checklist` ec ON e.name = ec.parent
         WHERE e.name = %s 
     """, (emp_id), as_dict=True)
 
-    leave_list2 = []
-    employee_names_emp = []  # Rename to employee_names_emp to avoid conflicts
-    
-    for i in get_leave2:
-        checklist_value_emp = i["document_name"]
-        if checklist_value_emp:
-            employee_names_emp.append(i["name"])
-            leave_list2.append(checklist_value_emp)
-        else:
-            leave_list2.append(f"No Compliance Checklist for Employee {emp_id}")
+    leave_list_emp = [entry["document_name"] for entry in employee_checklists]
+    employee_names_emp = [entry["name"] for entry in employee_checklists]
 
-    # Use set difference to find values in leave_list but not in leave_list2
-    differences = set(leave_list) - set(leave_list2)
-    print(differences)
+    # Use set difference to find values in leave_list_task but not in leave_list_emp
+    differences = set(leave_list_task) - set(leave_list_emp)
 
-    return {"employee_names_emp": employee_names_emp, "differences": list(differences)}
+    response = {"employee_names_emp": employee_names_emp, "differences": list(differences)}
 
-
-
-
-@frappe.whitelist()
-def get_certificate(emp_id, task,end_date,start_date):
-    # Your existing code here...
-    
-    get_leave = frappe.db.sql("""
-        SELECT ec.checklist, e.name
-        FROM tabTask e
-        JOIN `tabChecklist` ec ON e.name = ec.parent
-        WHERE e.name = %s
-    """, (task), as_dict=True)
-
-    leave_list = []
-    employee_names_task = []  # Rename to employee_names_task to avoid conflicts
-    
-    for i in get_leave:
-        checklist_value = i["checklist"]
-        if checklist_value:
-            employee_names_task.append(i["name"])
-            leave_list.append(checklist_value)
-        else:
-            leave_list.append(f"No Compliance Checklist for Task {task}")
-
-    get_leave2 = frappe.db.sql("""
-        SELECT ec.document_name, e.name
-        FROM tabEmployee e
-        JOIN `tabCompliance Checklist` ec ON e.name = ec.parent
-        WHERE e.name = %s 
-    """, (emp_id), as_dict=True)
-
-    leave_list2 = []
-    employee_names_emp = []  # Rename to employee_names_emp to avoid conflicts
-    
-    for i in get_leave2:
-        checklist_value_emp = i["document_name"]
-        if checklist_value_emp:
-            employee_names_emp.append(i["name"])
-            leave_list2.append(checklist_value_emp)
-        else:
-            leave_list2.append(f"No Compliance Checklist for Employee {emp_id}")
-
-    # Use set difference to find values in leave_list but not in leave_list2
-    differences = set(leave_list) - set(leave_list2)
-    print(differences)
-
-    return {"employee_names_emp": employee_names_emp, "differences": list(differences)}
+    # Check if differences list is empty before sending the response
+    if differences:
+        return response
+    else:
+        return {"message": "No differences found, employee has certificates."}
 
 
 
@@ -336,7 +368,7 @@ def change_project_date(event_id, start_date, end_date):
     # Sort task_names in ascending order
     task_names_sorted = sorted(task_names, key=lambda x: x['name'])
     if task_names_sorted:
-    # Get the last task in the sorted list
+        # Get the last task in the sorted list
         last_task_name = task_names_sorted[-1]["name"]
         last_task = frappe.get_doc("Task", last_task_name)
 
@@ -345,62 +377,55 @@ def change_project_date(event_id, start_date, end_date):
         last_task.save()
         frappe.db.commit()
         print(f"Updated exp_end_date of task ({last_task.name}) to {end_date}")
+
+        # Get the employees assigned to the last task
+        employees_assigned = frappe.get_all("Task Depends On", filters={"parent": last_task_name}, fields=["custom_employee", "task"], distinct=True)
+
+        for employee in employees_assigned:
+            emp_id = employee.get("custom_employee")
+            task_name = employee.get("task")
+            print(emp_id)
+            differences_messages = []
+            booking_info = employee_booking(emp_id, start_date, end_date)
+            
+            if booking_info["book_id"]:
+                booking_message = f"Employee {emp_id} is already booked during the project period. Booking ID(s): {', '.join(booking_info['book_id'])}"
+                frappe.msgprint(booking_message)
+
+            # Check for compliance checklist differences when the date increases
+            if end_date > start_date:
+                certificate_data = get_certificate_project(emp_id, task_name, end_date, start_date)
+                differences = set(certificate_data.get("employee_names_task", [])) - set(certificate_data.get("employee_names_emp", []))
+
+                # Check if there are differences in compliance checklists
+                if certificate_data["differences"]:
+                    for difference in certificate_data["differences"]:
+                        differences_message = f"Employee {emp_id} has no certificate: {difference}."
+                        differences_messages.append(differences_message)
+
+            for msg in differences_messages:
+                frappe.msgprint(msg)
+
+            if last_task:
+                # Check for document expiry differences only for the last task
+                expiry_data = get_expiry_data(emp_id, start_date, end_date)
+
+                # Use set difference to find differences between two lists
+                expiry_differences = set([str(date) for date in expiry_data["expiry_dates"]]) - set(certificate_data["differences"])
+
+                if expiry_differences:
+                    expiry_message = f"Employee {emp_id} has documents expiring during the project period. Expiry Dates: {', '.join(expiry_differences)}"
+                    frappe.msgprint(expiry_message)
+
+                # Check for leave only for the last task
+                leave_info = employee_leave(emp_id, start_date, end_date)
+
+                if leave_info["leave_id"]:
+                    leave_message = f"Employee {emp_id} is on leave during the project period. Leave ID(s): {', '.join(leave_info['leave_id'])}"
+                    frappe.msgprint(leave_message)
     else:
         print("There are no tasks linked to the project.")
 
-    # Get the employees assigned to tasks
-    task_names = frappe.get_list("Task", filters={"project": event_id}, fields=["name"])
-
-    task_names_list = [task["name"] for task in task_names]
-    print("tasks", task_names_list)
-
-    employees_assigned = frappe.get_all("Task Depends On", filters={"parent": ["in", task_names_list]}, fields=["custom_employee", "task"], distinct=True)
-
-    print("employees_assigned", employees_assigned)
-    for employee in employees_assigned:
-        emp_id = employee.get("custom_employee")
-        task_name = employee.get("task")
-        print(emp_id)
-        differences_messages = []
-        booking_info = employee_booking(emp_id, start_date, end_date)
-        if booking_info["book_id"]:
-            booking_message = f"Employee {emp_id} is already booked during the project period. Booking ID(s): {', '.join(booking_info['book_id'])}"
-            frappe.msgprint(booking_message)
-        # Check for compliance checklist differences when the date increases
-        if end_date > start_date:
-            certificate_data = get_certificate_project(emp_id, task_name, end_date, start_date)
-            # print("hello", certificate_data)
-            differences = set(certificate_data.get("employee_names_task", [])) - set(certificate_data.get("employee_names_emp", []))
-            # Check if there are differences in compliance checklists
-            if certificate_data["differences"]:
-                for difference in certificate_data["differences"]:
-                    differences_message = f"Employee {emp_id} has no certificate: {difference}."
-                    differences_messages.append(differences_message)
-
-                # Optionally, you can print or use certificate_data["employee_names_emp"] for more details
-                # print("Employee Names with Differences:", certificate_data["employee_names_emp"])
-
-        for msg in differences_messages:
-            frappe.msgprint(msg)       # frappe.msgprint(differences_message)
-
-            # Check for document expiry differences
-        expiry_data = get_expiry_data(emp_id, start_date, end_date)
-
-            # Use set difference to find differences between two lists
-        expiry_differences = set([str(date) for date in expiry_data["expiry_dates"]]) - set(certificate_data["differences"])
-
-        if expiry_differences:
-                expiry_message = f"Employee {emp_id} has documents expiring during the project period. Expiry Dates: {', '.join(expiry_differences)}"
-                frappe.msgprint(expiry_message)
-
-        leave_info = employee_leave(emp_id, start_date, end_date)
-        
-        
-
-        if leave_info["leave_id"]:
-            leave_message = f"Employee {emp_id} is on leave during the project period. Leave ID(s): {', '.join(leave_info['leave_id'])}"
-            print(leave_message)
-            frappe.msgprint(leave_message)
 
     # Print only the last task name if there are tasks
     # if task_names:
@@ -408,4 +433,3 @@ def change_project_date(event_id, start_date, end_date):
     #     print("Last Task name linked to the project:", last_task_name)
     # else:
     #     print("No tasks linked to the project.")
-

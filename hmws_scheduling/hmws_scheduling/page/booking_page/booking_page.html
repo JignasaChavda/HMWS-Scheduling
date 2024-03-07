@@ -7,14 +7,7 @@
     <style>
         label{margin-bottom: 0 !important}
     </style>
-    <!-- FullCalendar CSS -->
-    <!-- <link rel="stylesheet" href="/assets/frappe/frappe/public/js/lib/ffullcalendar.min.css"> -->
-
-    <!-- jQuery (required for FullCalendar) -->
-    <!-- <script src="/assets/jquery/jquery.min.js"></script> -->
     
-    <!-- FullCalendar JavaScript -->
-    <!-- <script src="/assets/frappe/frappe/public/js/lib/fullcalendar.min.js"></script> -->
 </head>
 <body>
     <!-- <h1>page</h1> -->
@@ -27,12 +20,59 @@
             </select>
           
         </div> -->
+        <div>
+            <div>
+                <!-- New div for additional select fields -->
+                <div style="padding: 15px; border-radius: 8px; display: flex; flex-direction: row; gap: 130px; padding-left: 190px;">
+                    <!-- Add your new select fields here -->
+                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                        <label for="vehicle">View By:</label>
+                        <select type="text" placeholder="Vehicle" id="vehicle" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" onchange="handleFilterChange()">
+                            <option value=""></option>
+                            <option value="project">Project</option>
+                            <option value="job">Job</option>
+                            <option value="employee">Employee</option>
+                        </select>
+                    </div>
+                    <div id="projectField" style="display: none; flex-direction: column; gap: 5px;">
+                        <label for="NewField2">Projects</label>
+                        <select id="project_select_for_all" name="NewField2" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red; max-height: 80px; overflow-y: auto;" onchange="selected_project_onload()">
+                           
+                        </select>
+                    </div>
+                    <div id="projectField2" style="display: none; flex-direction: column; gap: 5px;">
+                        <label for="NewField2">Projects</label>
+                        <select id="project_select" name="NewField2" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red; max-height: 80px; overflow-y: auto;" onchange="handleSelectChange()">
+                           
+                        </select>
+                    </div>
+                    
+            
+                    <div id="jobField" style="display: none; flex-direction: column; gap: 5px;">
+                        <label for="NewField3">Job:</label>
+                        <select id="task_select" name="NewField3" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red;" onchange="task_details_fielter()">
+                            <option value=""></option>
+                            <!-- Add options dynamically based on your data -->
+                        </select>
+                    </div>
+                    <div id="employeeField" style="display: none; flex-direction: column; gap: 5px;">
+                        <label for="NewField4">Employee</label>
+                        <select id="NewField4" name="NewField4" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red;" >
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    
+                </div>
+            </div>
+            
    
     <div style="display: flex; flex-direction: row; gap: 8px">
         <div>
-            <form style="display: flex; flex-direction: column; gap: 10px">
+            
+            <form style="background-color: #a7c1ea; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px">
+                <span style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">Booking</span>
                 <label for="Project">Project:</label>
-                <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="project_select" onchange="selected_project()">
+                <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="project_select_Booking" onchange="selected_project()">
                     <option value=""></option>
                 </select>
             
@@ -68,31 +108,13 @@
                 <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="employee_select" onchange="selected_employee()">
                     <option value=""></option>
                 </select>
+                <button onclick="myfunc()" style="margin-top: 10px;">Submit</button>
+                
             </form>
             
-            <button onclick="myfunc()" style="margin-top: 10px;">Submit</button>
+            
         </div>
        <div style="display: flex; flex-direction: column;width : 100%;  gap: 8px"> 
-        <div style="display: flex; flex-direction: row; width: 250px; gap: 8px; align-items: center;">
-        <div style="display: flex; flex-direction: column; width: 250px; gap: 8px">
-            <label for="Employee">Project</label>
-            <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="project_select_for_all" onchange="selected_project_onload()">
-                <option value=""></option>
-            </select>
-          
-        </div>
-        <div style="display: flex; flex-direction: row ; width: 250px; gap: 15px">
-            <div>
-            <label for="myCheckbox">Show Task </label>
-            <input type="checkbox" id="myCheckbox" onclick="select_task()">
-            </div>
-            <div>
-            <label for="myCheckbox">Show Employee </label>
-            <input type="checkbox" id="Employee_checkbox" onclick="select_emp()">
-            </div>
-            </div>
-         </div>
-         
         
         <div id="calendar" style="background-color: #fff; width : 100% ; margin-top: 20px ;"></div>
     </div>
@@ -102,3 +124,4 @@
     
 </body>
 </html>
+
