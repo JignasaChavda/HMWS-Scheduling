@@ -101,7 +101,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
         title: "Booking Calendar",
         single_column: true,
     });
-
+	
     const githubFileUrl =
         "https://api.github.com/repos/Dhruvipatel12/full_calendar/contents/index.global.min.js";
     loadGitHubFile(githubFileUrl);
@@ -230,163 +230,203 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 		});
 	}
 	function task_details_fielter() {
-		let events1 = [];
+        let events1 = [];
 
-		// Get selected tasks
-		let selectedTasks = Array.from(document.getElementById("task_select").selectedOptions, option => option.value);
-	
-		frappe.call({
-			method: "frappe.client.get_list",
-			args: {
-				doctype: "Task",
-				fields: ["name", "project", "custom_vehicle", "custom_kit", "exp_start_date", "exp_end_date"],
-				filters: {
-					name: ["in", selectedTasks]  // Use "in" filter for multiple selections
-				}
-			},
-			callback: function (r) {
-				let task_data = r.message;
-				console.log(task_data, "");
-	
-				task_data.forEach((data) => {
-					let dt1 = {
-						id: data.name,
-						title: data.name + " - " + data.custom_vehicle,
-						start: data.exp_start_date,
-						end: data.exp_end_date,
-						url: "http://127.0.0.1:8006/app/task/" + data.name,
-						color: '#ADD918',
-						textColor: 'black'
-					};
-					events1.push(dt1);
-					console.log(events1, "events1 updated");
-				});
-				initializeCalendar(events1);
-			}
-		});
-    }
-	
-function employee_filter() {
-    let selectedProjects = Array.from(document.getElementById("project_select").selectedOptions).map(option => option.value);
-    console.log("Selected Projects:", selectedProjects);
+    let select_task = document.getElementById("task_select").value;
 
     frappe.call({
         method: "frappe.client.get_list",
         args: {
             doctype: "Task",
-            fields: ["*"],
+            fields: ["name", "project", "custom_vehicle", "custom_kit", "exp_start_date", "exp_end_date"],
             filters: {
-                project: ["in", selectedProjects]
+                name: select_task
             }
         },
         callback: function (r) {
-            let tsk_data = r.message;
-            console.log(tsk_data);
-            tsk_data = tsk_data.map(function (task) {
-                return task.name;
+            let task_data = r.message;
+            console.log(task_data, "");
+
+            task_data.forEach((data) => {
+                let dt1 = {
+                    id: data.name,
+                    title: data.name + " - " + data.custom_vehicle,
+                    start: data.exp_start_date,
+                    end: data.exp_end_date,
+                    url: "http://127.0.0.1:8006/app/task/" + data.name,
+                    color: '#ADD918',
+                    textColor: 'black'
+                };
+                events1.push(dt1);
+                console.log(events1, "events1 updated");
             });
-            console.log(tsk_data, "tsk_data");
-            Promise.all(tsk_data.map(function (taskName) {
-                return new Promise(function (resolve) {
-                    frappe.call({
-                        method: "frappe.client.get",
-                        args: {
-                            doctype: "Task",
-                            name: taskName,
-                            fields: ["*"],
-                        },
-                        callback: function (taskResponse) {
-                            var data = taskResponse.message;
-                            var x = taskResponse.message.depends_on;
-                            console.log("Task Details:", x, "hii");
-                            console.log(typeof taskResponse);
-
-                            if (Array.isArray(x)) {
-                                var customEmployeeValues = [];
-
-                                for (var i = 0; i < x.length; i++) {
-                                    var dependsOnObject = x[i];
-                                    console.log("c", dependsOnObject);
-
-                                    if ('custom_employee' in dependsOnObject) {
-                                        var customEmployeeValue = dependsOnObject.custom_employee;
-                                        console.log("Custom Employee Value:", customEmployeeValue);
-
-                                        customEmployeeValues.push(customEmployeeValue);
-                                    } else {
-                                        console.log("custom_employee not found in depends_on object");
-                                    }
-                                }
-
-                                var concatenatedValues = customEmployeeValues.join(', ');
-                                console.log("Concatenated Custom Employee Values:", concatenatedValues);
-
-                                var selectElement = document.getElementById("NewField4");
-                                selectElement.innerHTML = '<option value=""></option>';
-
-                                customEmployeeValues.forEach(function (value) {
-                                    var option = document.createElement("option");
-                                    option.value = value;
-                                    option.text = value;
-                                    selectElement.appendChild(option);
-                                });
-
-                                console.log("customEmployeeValues", customEmployeeValues);
-								selected_employee_alll(customEmployeeValues);
-                                // Call selected_employee_alll function with customEmployeeValues
-                             
-                            }
-
-
-							if (Array.isArray(taskResponse)) {
-								taskResponse.forEach((data) => {    
-									let dt1 = {
-										title: data.name + ' - ' + concatenatedValues,
-										start: data.exp_start_date,
-										end: data.exp_end_date,
-										url: "http://127.0.0.1:8006/app/task/" + data.name,
-										color: '#ADD918',
-										textColor: 'black'
-									};
-						
-									events1.push(dt1);
-								});
-							} else if (typeof taskResponse === 'object') {
-								// Assuming you want to iterate over values
-								Object.values(taskResponse).forEach((data) => {    
-									let dt1 = {
-										title: data.name + ' - ' + concatenatedValues,
-										start: data.exp_start_date,
-										end: data.exp_end_date,
-										url: "http://127.0.0.1:8006/app/task/" + data.name,
-										color: 'pink',
-										textColor: 'black'
-									};
-						
-									events1.push(dt1);
-									console.log(events1);
-								});
-							}
-							
-							
-							resolve();
-							initializeCalendar(events1);
-							 // Resolve the promise after processing each task
-						}
-						
-						
-					});
+            initializeCalendar(events1);
+        }
+    });
+    }
+	function employee_filter() {
+		let selectedProjects = Array.from(document.getElementById("project_select").selectedOptions).map(option => option.value);
+		console.log("Selected Projects:", selectedProjects);
+	
+		frappe.call({
+			method: "frappe.client.get_list",
+			args: {
+				doctype: "Task",
+				fields: ["*"],
+				filters: {
+					project: ["in", selectedProjects]
+				}
+			},
+			callback: function (r) {
+				let tsk_data = r.message;
+				console.log(tsk_data);
+				tsk_data = tsk_data.map(function (task) {
+					return task.name;
 				});
-			})).then(function () {
-				// Here, you can use the events1 array as needed
-				console.log("Processed events: ", events1);
-				
-			});
-
-			
-		   }
+				console.log(tsk_data, "tsk_data");
+	
+				// Array to store events for the calendar
+				let events1 = [];
+	
+				Promise.all(tsk_data.map(function (taskName) {
+					return new Promise(function (resolve) {
+						frappe.call({
+							method: "frappe.client.get",
+							args: {
+								doctype: "Task",
+								name: taskName,
+								fields: ["*"],
+							},
+							callback: function (taskResponse) {
+								var data = taskResponse.message;
+								var x = taskResponse.message.depends_on;
+								console.log("Task Detailsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss:", x, "hii");
+	
+								if (Array.isArray(x)) {
+									var customEmployeeValues = [];
+	
+									for (var i = 0; i < x.length; i++) {
+										var dependsOnObject = x[i];
+										console.log("c", dependsOnObject);
+	
+										if ('custom_employee' in dependsOnObject) {
+											var customEmployeeValue = dependsOnObject.custom_employee;
+											console.log("Custom Employee Value:", customEmployeeValue);
+											customEmployeeValues.push(customEmployeeValue);
+										} else {
+											console.log("custom_employee not found in depends_on object");
+										}
+									}
+	
+									var concatenatedValues = customEmployeeValues.join(', ');
+									console.log("Concatenated Custom Employee Values:", concatenatedValues);
+	
+									var selectElement = document.getElementById("NewField4");
+									selectElement.innerHTML = '<option value=""></option>';
+	
+									customEmployeeValues.forEach(function (value) {
+										var option = document.createElement("option");
+										option.value = value;
+										option.text = value;
+										selectElement.appendChild(option);
+									});
+	
+									console.log("customEmployeeValues", customEmployeeValues);
+	
+									// Call the first function and wait for its completion
+									frappe.call({
+										method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_leave_all",
+										args: {
+											custom_employee_values: customEmployeeValues,
+										},
+										callback: function (r) {
+											if (r.message && r.message.leave_details && r.message.leave_details.length > 0) {
+												var data = r.message.leave_details;
+	
+												for (let i1 = 0; i1 < data.length; i1++) {
+													let dt1 = {
+														title: data[i1].employee_id+ "||On Leave  " ,
+														start: data[i1].from_date,
+														end: data[i1].to_date,
+														url: "http://127.0.0.1:8006/app/leave-application/" + data[i1].leave_id,
+														color: ' #55A5FA',
+														textColor: 'black'
+													};
+													events1.push(dt1);
+													console.log(events1, "eventsdd");
+												}
+	
+												initializeCalendar(events1);
+												console.log("Leave Details:", data);
+											} else {
+												console.log("Error or No Data");
+											}
+											// Resolve the promise after processing the first call
+											resolve();
+										}
+									});
+	
+									// Call the second function and wait for its completion
+									let dt1 = {
+										title: concatenatedValues+"||"+data.project+"||"+data.name   ,
+										start: data.exp_start_date,
+										end: data.exp_end_date,
+										url: "http://127.0.0.1:8006/app/task/" + data.name,
+										color: '#55A5FA',
+										textColor: 'black'
+									};
+	
+									events1.push(dt1);
+									
+									// if (customEmployeeValues.includes(data.name)) {
+										// Call the additional function for certificate_on_load
+										frappe.call({
+											method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.certificate_expiry_date",
+											args: {
+												custom_employee_values: customEmployeeValues,
+											},
+											callback: function (r) {
+												let data = r.message;
+												// console.log("ppppppppppppppppppppppppppppppppppppppppppppppppppppppppp", data);
+										
+												data.leave_details.forEach((certificate) => {
+													console.log(certificate.leave_id, "name of certificate");
+										
+													let dt1 = {
+														id: certificate.name+ "- Expired:"+ certificate.document_name ,
+														title: certificate.name+ "- Expired:"+ certificate.document_name ,
+														start: certificate.expiry_date,
+														url: "http://127.0.0.1:8006/app/task/" + certificate.leave_id,
+														color: '#55A5FA',
+														textColor: 'black'
+													};
+										
+													events1.push(dt1);
+													console.log(events1, "certificate");
+												});
+										
+												initializeCalendar(events1);
+											}
+										});
+										
+									// }
+									
+									
+									
+	
+									resolve();
+									initializeCalendar(events1);
+								}
+							}
+						});
+					});
+				})).then(function () {
+					// Here, you can use the events1 array as needed
+					console.log("Processed events: ", events1);
+				});
+			}
 		});
-	 }
+	}
 	
 	function select_emp() {
 		let events1 = [];  // Initialize events1 array
@@ -398,123 +438,148 @@ function employee_filter() {
 		console.log("events ", selectpro);
 		console.log("events ", selectcheck);
 	
-		
-			// Check if the checkbox is checked
-			frappe.call({
-				method: "frappe.client.get_list",
-				args: {
-					doctype: "Task",
-					fields: ["*"],
-					
-				},
-				callback: function (r) {
-					let tsk_data = r.message;
-					console.log(tsk_data);
-					tsk_data = tsk_data.map(function (task) {
-						return task.name;
-					});
-					console.log(tsk_data);
+		// Check if the checkbox is checked
+		frappe.call({
+			method: "frappe.client.get_list",
+			args: {
+				doctype: "Task",
+				fields: ["*"],
+			},
+			callback: function (r) {
+				let tsk_data = r.message;
+				console.log(tsk_data);
+				tsk_data = tsk_data.map(function (task) {
+					return task.name;
+				});
+				console.log(tsk_data);
 	
-					// Use Promise.all to wait for all asynchronous calls to finish
-					Promise.all(tsk_data.map(function (taskName) {
-						return new Promise(function (resolve) {
-							frappe.call({
-								method: "frappe.client.get",
-								args: {
-									doctype: "Task",
-									name: taskName,
-									fields: ["*"],
-									// filters: {
-									// 	"parent_task": ["is", "null"]
-									// }
-								},
-								callback: function (taskResponse) {
-									// console.log("taskResponse",taskResponse)
-									var data=taskResponse.message
-									var x = taskResponse.message.depends_on;
-									console.log("Task Details:", x, "hii");
-									console.log(typeof taskResponse);
-
-									if (Array.isArray(x)) {
-										var customEmployeeValues = []; // Array to store custom_employee values
-										
-										for (var i = 0; i < x.length; i++) {
-											var dependsOnObject = x[i];
-											console.log("c", dependsOnObject);
-
-											// Check if custom_employee exists in the current depends_on object
-											if ('custom_employee' in dependsOnObject) {
-												var customEmployeeValue = dependsOnObject.custom_employee;
-												console.log("Custom Employee Value:", customEmployeeValue);
-
-												// Store the custom_employee value in the array
-												customEmployeeValues.push(customEmployeeValue);
-											} else {
-												console.log("custom_employee not found in depends_on object");
-											}
+				// Use Promise.all to wait for all asynchronous calls to finish
+				Promise.all(tsk_data.map(function (taskName) {
+					return new Promise(function (resolve) {
+						frappe.call({
+							method: "frappe.client.get",
+							args: {
+								doctype: "Task",
+								name: taskName,
+								fields: ["*"],
+							},
+							callback: function (taskResponse) {
+								var data = taskResponse.message;
+								var x = taskResponse.message.depends_on;
+								console.log("Task Details:", x, "hii");
+								console.log(typeof taskResponse);
+	
+								if (Array.isArray(x)) {
+									var customEmployeeValues = [];https://docs.google.com/document/d/1NmmUWlNnXAr6OwlBv20FaUGPfJYMMmlWG-N-KALAAgM/edit?usp=sharing
+	
+									for (var i = 0; i < x.length; i++) {
+										var dependsOnObject = x[i];
+										console.log("c", dependsOnObject);
+	
+										if ('custom_employee' in dependsOnObject) {
+											var customEmployeeValue = dependsOnObject.custom_employee;
+											console.log("Custom Employee Value:", customEmployeeValue);
+											customEmployeeValues.push(customEmployeeValue);
+										} else {
+											console.log("custom_employee not found in depends_on object");
 										}
-
-										// Concatenate the custom_employee values with commas and log the result
-										var concatenatedValues = customEmployeeValues.join(', ');
-										console.log("Concatenated Custom Employee Values:", concatenatedValues);
-										
 									}
-
-									if (Array.isArray(taskResponse)) {
-										taskResponse.forEach((data) => {    
-											let dt1 = {
-												title: data.name + ' - ' + concatenatedValues,
-												start: data.exp_start_date,
-												end: data.exp_end_date,
-												url: "http://127.0.0.1:8006/app/task/" + data.name,
-												color: '#ADD918',
-												textColor: 'black'
-											};
-								
-											events1.push(dt1);
-										});
-									} else if (typeof taskResponse === 'object') {
-										// Assuming you want to iterate over values
-										Object.values(taskResponse).forEach((data) => {    
-											let dt1 = {
-												title: data.name + ' - ' + concatenatedValues,
-												start: data.exp_start_date,
-												end: data.exp_end_date,
-												url: "http://127.0.0.1:8006/app/task/" + data.name,
-												color: 'pink',
-												textColor: 'black'
-											};
-								
-											events1.push(dt1);
-											console.log(events1);
-										});
-									}
-									
-									
-									resolve();
-									initializeCalendar(events1);
-									 // Resolve the promise after processing each task
-								}
-								
-								
-							});
-						});
-					})).then(function () {
-						// Here, you can use the events1 array as needed
-						console.log("Processed events: ", events1);
-					});
-				}
-			});
-		
-	}
-
-
 	
+									var concatenatedValues = customEmployeeValues.join(', ');
+									console.log("Concatenated Custom Employee Values:", concatenatedValues);
+	
+									// Create a common structure for event
+									let dt1 = {
+										title: concatenatedValues+"||"+data.project+"||"+data.name   ,
+										start: data.exp_start_date,
+										end: data.exp_end_date,
+										url: "http://127.0.0.1:8006/app/task/" + data.name,
+										color: '#55A5FA',
+										textColor: 'black'
+									};
+	
+									events1.push(dt1);
+	
+									// Add more conditions to populate the event based on other criteria if needed
+								}
+								resolve();
+							}
+						});
+					});
+				})).then(function () {
+					// Here, you can use the events1 array as needed
+					console.log("Processed events: ", events1);
+	
+					// After processing all tasks, make the final call to fetch employee_leave_on_load data
+					frappe.call({
+						method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_leave_on_load",
+						args: {},
+						callback: function (r) {
+							let data = r.message;
+							console.log("dattatatttadatoi", data);
+	
+							data.forEach((data) => {
+								let dt1 = {
+									id: data.name,
+									title: data.employee + " - " + "On Leave",
+									start: data.from_date,
+									end: data.to_date,
+									url: "http://127.0.0.1:8006/app/task/" + data.name,
+									color: '#55A5FA',
+									textColor: 'black'
+								};
+	
+								events1.push(dt1);
+							});
+	
+							initializeCalendar(events1);
+						}
+					});
+					frappe.call({
+						method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.certificate_on_load",
+						args: {},
+						callback: function (r) {
+							let data = r.message;
+							var x=data.name;
+							console.log(x,"name of")
+							console.log("cerificate", data);
+							
+	
+							data.forEach((certificate) => {
+								// Accessing the "name" field of each certificate
+								console.log(certificate.name, "name of certificate");
+					
+								let dt1 = {
+									id: certificate.name+ "- Expired:"+ certificate.document_name ,
+									title: certificate.name+ "- Expired:"+ certificate.document_name ,
+									start: certificate.expiry_date,
+									url: "http://127.0.0.1:8006/app/task/" + certificate.name,
+									color: '#55A5FA',
+									textColor: 'black'
+								};
+					
+								events1.push(dt1);
+								console.log(events1, "certificate");
+							});
+	
+							initializeCalendar(events1);
+						}
+					});
+				});
+			}
+		});
+	}
+		
+
 	function selected_project() {
 		let selectemp = document.getElementById("project_select_Booking").value;
 		val = selectemp;
 		events1 = [];
-	
+
+
+		$.ajax({
+			
+		})
 		if (selectemp) {
 			events1=[]
 			frappe.call({
@@ -736,7 +801,7 @@ function employee_filter() {
 
 	function updateSubTaskField() {
 		frappe.call({
-			method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.get_sub_task",
+			method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.get_sub_task",
 			args: {
 				task: document.getElementById("task").value,
 			},
@@ -765,7 +830,7 @@ function employee_filter() {
 	function get_employee() {
 		console.log("get_employee function called");  // Add this line for debugging
 		frappe.call({
-			method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.get_emp_list",
+			method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.get_emp_list",
 			args: {
 				job_role: document.getElementById("job_role").value,
 			},
@@ -807,48 +872,47 @@ function employee_filter() {
 
 
 
-	function selected_employee_alll(customEmployeeValues) {
-		
-		frappe.call({
-			method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.employee_leave_all",
-			args: {
-				custom_employee_values: customEmployeeValues,
-			},
-			callback: function (r) {
-				// Check if the call was successful
-				if (r.message && r.message.leave_details && r.message.leave_details.length > 0) {
-					var data = r.message.leave_details;
-					var events1 = [];
+	// function selected_employee_alll(customEmployeeValues) {
+	// 	frappe.call({
+	// 		method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_leave_all",
+	// 		args: {
+	// 			custom_employee_values: customEmployeeValues,
+	// 		},
+	// 		callback: function (r) {
+	// 			// Check if the call was successful
+	// 			if (r.message && r.message.leave_details && r.message.leave_details.length > 0) {
+	// 				var data = r.message.leave_details;
+	// 				var events1 = [];
 				
-					for (let i1 = 0; i1 < data.length; i1++) {
-						let dt1 = {
-							title: "Leave || " + data[i1].employee_id,
-							start: data[i1].from_date,
-							end: data[i1].to_date,
-							url: "http://127.0.0.1:8006/app/leave-application/" + data[i1].leave_id,
-							color: '#ACCBF3',
-							textColor: 'black'
-						};
-						events1.push(dt1);
-						console.log(events1, "eventsdd");
-					}
-					// initializeCalendar(events1);
+	// 				for (let i1 = 0; i1 < data.length; i1++) {
+	// 					let dt1 = {
+	// 						title: "Leave || " + data[i1].employee_id,
+	// 						start: data[i1].from_date,
+	// 						end: data[i1].to_date,
+	// 						url: "http://127.0.0.1:8006/app/leave-application/" + data[i1].leave_id,
+	// 						color: '#ACCBF3',
+	// 						textColor: 'black'
+	// 					};
+	// 					events1.push(dt1);
+	// 					console.log(events1, "eventsdd");
+	// 				}
+	// 				initializeCalendar(events1);
 				
-					// Process the leave details as needed
-					console.log("Leave Details:", data);
-				} else {
-					// Handle the case when there is an error or no data
-					console.log("Error or No Data");
-				}
+	// 				// Process the leave details as needed
+	// 				console.log("Leave Details:", data);
+	// 			} else {
+	// 				// Handle the case when there is an error or no data
+	// 				console.log("Error or No Data");
+	// 			}
 				
-			}
-		});
-	}
+	// 		}
+	// 	});
+	// }
 	
 	
 	function selected_employee() {
 		frappe.call({
-			method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.employee_leave",
+			method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_leave",
 			args: {
 				emp_id: document.getElementById("employee_select").value,
 				s_dt: document.getElementById("start_date").value,
@@ -887,7 +951,7 @@ function employee_filter() {
 				}
 	
 				frappe.call({
-					method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.employee_booking",
+					method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_booking",
 					args: {
 						emp_id: document.getElementById("employee_select").value,
 						s_dt: document.getElementById("start_date").value,
@@ -926,7 +990,7 @@ function employee_filter() {
 							);
 						}
 						frappe.call({
-							method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.get_expiry_data",
+							method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.get_expiry_data",
 							args: {
 								emp_id: document.getElementById("employee_select").value,
 								s_dt: document.getElementById("start_date").value,
@@ -979,7 +1043,7 @@ function employee_filter() {
 
 
 						frappe.call({
-							method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.get_certificate",
+							method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.get_certificate",
 							args: {
 								emp_id: document.getElementById("employee_select").value,
 								task: document.getElementById("task").value,
@@ -1116,7 +1180,7 @@ function project_data() {
                         start: resp_data.expected_start_date,
                         end: resp_data.expected_end_date,
                         url: "http://127.0.0.1:8006/app/project/" + resp_data.name,
-                        color: '#FFAC33',
+                        color: '#F5B411',
                         textColor: 'black'
                     };
                     events1.push(event);
@@ -1132,6 +1196,7 @@ function project_data() {
 function selected_project_onload() {
     let selectedProjects = Array.from(document.getElementById("project_select_for_all").selectedOptions).map(option => option.value);
     console.log(selectedProjects);
+	
 
     // Reset events1 array for each selection change
     let events1 = [];
@@ -1217,7 +1282,7 @@ function select_job_data() {
                     tsk_data.forEach((data) => {
                         let dt1 = {
                             id: data.name,
-                            title: data.name + " - " + data.custom_vehicle,
+                            title:  data.name + " - " + data.project,
                             start: data.exp_start_date,
                             end: data.exp_end_date,
                             url: "http://127.0.0.1:8006/app/task/" + data.name,
@@ -1238,6 +1303,35 @@ function select_job_data() {
     });
 }
 
+function all_emp_leave() {
+    frappe.call({
+        method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_leave_on_load",
+        args: {},
+        callback: function (r) {
+            let data = r.message;
+			console.log("dattatatttadatoi",data)
+            let events1 = [];  // Declare events1 array outside the loop
+
+            data.forEach((data) => {
+                let dt1 = {
+                    id: data.name,
+                    title: data.employee + " - " + data.name,
+                    start: data.from_date,
+                    end: data.to_date,
+                    url: "http://127.0.0.1:8006/app/task/" + data.name,
+                    color: 'red',
+                    textColor: 'black'
+                };
+
+                events1.push(dt1);
+            });  // Remove the extra semicolon
+
+            console.log(events1);
+			initializeCalendar(events1);
+            // show_calander();
+        }
+    });
+}
 
 
 
@@ -1264,11 +1358,11 @@ function job_data() {
 				tsk_data.forEach((data) => {
 					let dt1 = {
 						id:data.name,
-						title: data.name + " - " + data.custom_vehicle,
+						title: data.name + " - " + data.project,
 						start: data.exp_start_date,
 						end: data.exp_end_date,
 						url: "http://127.0.0.1:8006/app/task/" + data.name,
-						color: '#ADD918',
+						color: '#A8DB20',
 						textColor: 'black'
 					};
 
@@ -1286,6 +1380,12 @@ function clearCalendar() {
     events1 = [];
     initializeCalendar(events1);
 }
+
+
+
+
+
+
 
 // Add this function to handle the change in the "view By" dropdown
 function handleFilterChange() {
@@ -1322,6 +1422,7 @@ function handleFilterChange() {
         jobField.style.display = "flex";
         employeeField.style.display = "flex";
 		select_emp();
+		// all_emp_leave()
 		// selected_employee_alll();
         // Additional logic or functions related to the "employee" option can be added here
     }
@@ -1339,11 +1440,41 @@ document.addEventListener("DOMContentLoaded", function () {
     employeeField.style.display = "none";
 });
 
-	
+
+// Create a script element
+var scriptselect = document.createElement('script');
+
+// Set the src attribute to the jQuery CDN
+scriptselect.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js';
+
+// Append the script element to the document's head
+document.head.appendChild(scriptselect);
+
+var scriptselect2 = document.createElement('script');
+
+// Set the src attribute to the jQuery CDN
+scriptselect2.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
+
+// Append the script element to the document's head
+document.head.appendChild(scriptselect2);
+
+
+
+
+
+var script12 = document.createElement('script');
+
+// Set the src attribute to the jQuery CDN
+script12.src = 'https://code.jquery.com/jquery-3.6.4.min.js';
+
+// Append the script element to the document's head
+document.head.appendChild(script12);
+
 
     let script1 = document.createElement("script");
     script1.innerHTML = `
         // Your script content goes here
+		
         
 		
 
@@ -1363,16 +1494,17 @@ document.addEventListener("DOMContentLoaded", function () {
 		${select_emp.toString()}
 		${selected_employee.toString()}
 		${filter_project.toString()}
+		${all_emp_leave.toString()}
 		${project_data.toString()}
 		${selected_project_onload.toString()}
-		${selected_employee_alll.toString()}
+		
 		${frappeTask.toString()}
 		${frappeProject2.toString()}
-		employee_filter();
 		task_details();
 		selected_project();
 		frappeProject();
 		frappeProject2();
+		// all_emp_leave();
 		${selected_employee.toString()}
 		// selected_employee_alll();
 		
@@ -1393,5 +1525,7 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => {
         $(frappe.render_template("booking_page", {})).appendTo(page.body);
     }, 1000);
+	
+	
 }
 

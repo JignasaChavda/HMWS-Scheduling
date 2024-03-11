@@ -4,108 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+   
     <style>
         label{margin-bottom: 0 !important}
+        
+        
     </style>
+   
     
 </head>
 <body>
-    <!-- <h1>page</h1> -->
     
-        <!-- <div style="display: flex; flex-direction: column; width: 250px; gap: 8px">
 
-            <label for="Employee">Select A Project:</label>
-            <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="project_select_for_all" onchange="selected_project_onload()">
-                <option value=""></option>
-            </select>
-          
-        </div> -->
-        <div>
-            <div>
-                <!-- New div for additional select fields -->
-                <div style="padding: 15px; border-radius: 8px; display: flex; flex-direction: row; gap: 130px; padding-left: 190px;">
-                    <!-- Add your new select fields here -->
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <label for="vehicle">View By:</label>
-                        <select type="text" placeholder="Vehicle" id="vehicle" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" onchange="handleFilterChange()">
-                            <option value=""></option>
-                            <option value="project">Project</option>
-                            <option value="job">Job</option>
-                            <option value="employee">Employee</option>
-                        </select>
+             <div>
+                <div style="display: flex; flex-direction: row; gap: 50px; margin-left: 305px;">
+                    <div style="display: flex ; flex-direction: column; width: 25%;">
+                    <label for="vehicle">View By:</label>
+                    <select type="text" placeholder="Vehicle" id="vehicle" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" onchange="handleFilterChange()">
+                        <option value=""></option>
+                        <option value="project">Project</option>
+                        <option value="job">Job</option>
+                        <option value="employee">Employee</option>
+                    </select>
                     </div>
-                    <div id="projectField" style="display: none; flex-direction: column; gap: 5px;">
+        
+                    <div id="projectField" style="display: none;flex-direction: column;  gap: 5px; width: 25%;">
                         <label for="NewField2">Projects</label>
-                        <select id="project_select_for_all" name="NewField2" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red; max-height: 80px; overflow-y: auto;" onchange="selected_project_onload()">
-                           
-                        </select>
+                        <select id="project_select_for_all" name="NewField2" class="mul-select" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red; max-height: 100px; overflow-y: auto; " onchange="selected_project_onload()"></select>
                     </div>
-                    <div id="projectField2" style="display: none; flex-direction: column; gap: 5px;">
+        
+                    <div id="projectField2" style="display: none; flex-direction: column; gap: 5px; width: 25%;">
                         <label for="NewField2">Projects</label>
-                        <select id="project_select" name="NewField2" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red; max-height: 80px; overflow-y: auto;" onchange="handleSelectChange()">
-                           
-                        </select>
+                        <select id="project_select" name="NewField2" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red; max-height: 100px; overflow-y: auto; " onchange="handleSelectChange()"></select>
                     </div>
-                    
-            
-                    <div id="jobField" style="display: none; flex-direction: column; gap: 5px;">
+        
+                    <div id="jobField" style="display: none; flex-direction: column; gap: 5px; width: 25%;">
                         <label for="NewField3">Job:</label>
                         <select id="task_select" name="NewField3" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red;" onchange="task_details_fielter()">
                             <option value=""></option>
                             <!-- Add options dynamically based on your data -->
                         </select>
                     </div>
-                    <div id="employeeField" style="display: none; flex-direction: column; gap: 5px;">
+        
+                    <div id="employeeField" style="display: none; flex-direction: column; gap: 5px; width: 25%;">
                         <label for="NewField4">Employee</label>
-                        <select id="NewField4" name="NewField4" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red;" >
+                        <select id="NewField4" name="NewField4" multiple style="border-radius: 5px; padding: 10px 8px; background-color: #a7c1ea; border: 1px solid red;">
                             <option value=""></option>
                         </select>
                     </div>
-                    
                 </div>
-            </div>
-            
+             </div>
+             
    
     <div style="display: flex; flex-direction: row; gap: 8px">
         <div>
             
-            <form style="background-color: #a7c1ea; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px">
-                <span style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">Booking</span>
-                <label for="Project">Project:</label>
-                <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="project_select_Booking" onchange="selected_project()">
-                    <option value=""></option>
-                </select>
+            
+            <form style="background-color: #a7c1ea; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px;width: 300px;">
+                <span style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">Booking Form</span>
+             
+                    <select class="custom-select" type="text" placeholder="Select A Project" style="border-radius: 5px; border: 1px solid red;" id="project_select_Booking" onchange="selected_project()">
+                        <option value=""></option>
+                        <!-- Add your option elements here -->
+                    </select>
+             
             
                 <label for="Task">Job:</label>
-                <select type="text" placeholder="Select A Task" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="task" onchange="task_details()">
+                <select class="custom-select"    type="text" placeholder="Select A Task" style="border-radius: 5px;  border: 1px solid red;" id="task" onchange="task_details()">
                     <option value=""></option>
                 </select>
                 <label for="Start Date">Start Date:</label>
-                <input type="date" id="start_date" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;">
+                <input type="date" id="start_date" style="border-radius: 5px;  border: 1px solid red;">
 
                 <label for="End Date">End Date:</label>
-                <input type="date" id="end_date" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;">
+                <input type="date" id="end_date" style="border-radius: 5px;  border: 1px solid red;">
 
                 <label for="vehical">Vehicle:</label>
-                <select type="text" placeholder="Vehicle" id="vehical" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;">
+                <select class="custom-select" type="text" placeholder="Vehicle" id="vehical" style="border-radius: 5px;  border: 1px solid red;">
                 <option value=""></option>
                 </select>
             
                 <label for="kit">Kit:</label>
-                <select type="text" placeholder="Kit" id="kit" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;">
+                <select class="custom-select" type="text" placeholder="Kit" id="kit" style="border-radius: 5px;border: 1px solid red;">
                     <option value=""></option>
                 </select>
             
                 <label for="Sub Task">Sub Task:</label>
-                <select type="text" placeholder="Sub Task" id="sub_task" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;">
+                <select class="custom-select" type="text" placeholder="Sub Task" id="sub_task" style="border-radius: 5px;  border: 1px solid red;">
                 <option value=""></option></select>
 
                 <label for="job Role">Job Role:</label>
-                <select type="text" placeholder="Job Role" id="job_role" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" onchange="get_employee()">
+                <select class="custom-select" type="text" placeholder="Job Role" id="job_role" style="border-radius: 5px;  border: 1px solid red;" onchange="get_employee()">
                 <option value=""></option></select>
 
                 <label for="Employee">Employee:</label>
-                <select type="text" placeholder="Select A Project" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" id="employee_select" onchange="selected_employee()">
+                <select class="custom-select" type="text" placeholder="Select A Project" style="border-radius: 5px;  border: 1px solid red;" id="employee_select" onchange="selected_employee()">
                     <option value=""></option>
                 </select>
                 <button onclick="myfunc()" style="margin-top: 10px;">Submit</button>
@@ -114,14 +107,19 @@
             
             
         </div>
-       <div style="display: flex; flex-direction: column;width : 100%;  gap: 8px"> 
+        <div style="display: flex; flex-direction: row; width: 100%;">
+            <div style=" border-radius: 8px; display: flex; flex-direction: column; width: 100%;">
+                
+                
+                <div id="calendar" style="background-color: #fff; width: 100%; margin-top: 20px;"></div>
+            </div>
+        </div>
         
-        <div id="calendar" style="background-color: #fff; width : 100% ; margin-top: 20px ;"></div>
+        
     </div>
-    </div>
+
     
 
     
 </body>
 </html>
-

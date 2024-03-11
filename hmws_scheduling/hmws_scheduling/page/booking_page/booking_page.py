@@ -84,6 +84,76 @@ def employee_leave_all(custom_employee_values):
 
 
 
+@frappe.whitelist()
+def certificate_expiry_date(custom_employee_values):
+    import json
+
+    employee_ids = json.loads(custom_employee_values)
+
+    placeholders = ', '.join(['%s'] * len(employee_ids)) if employee_ids else 'NULL'
+
+    if employee_ids:
+        get_leave = frappe.db.sql("""
+            SELECT ec.document_name, e.name, ec.expiry_date
+            FROM tabEmployee e
+            JOIN `tabCompliance Checklist` ec ON e.name = ec.parent
+            WHERE e.name IN ({})
+        """.format(placeholders), tuple(employee_ids), as_dict=True)
+    else:
+        get_leave = []
+
+    print("Check the certificate", get_leave)
+
+    leave_list = []
+
+    for leave in get_leave:
+        leave_data = {
+            "document_name": leave["document_name"],
+            "name": leave["name"],
+            "expiry_date": leave["expiry_date"]
+        }
+        leave_list.append(leave_data)
+
+    return {"leave_details": leave_list}
+
+
+
+
+
+@frappe.whitelist()
+def employee_leave_on_load():
+    print("hellookjjjsv")
+
+    # Execute the SQL query to fetch all leave details
+    leave_list = frappe.db.sql("""
+        SELECT name, employee, from_date, to_date 
+        FROM `tabLeave Application`
+    """, as_dict=True)
+    print(leave_list,"leave list")
+    # Create a response dictionary with the required information
+    
+    return leave_list
+
+
+@frappe.whitelist()
+def certificate_on_load():
+    print("hellookjjjsv")
+
+    # Execute the SQL query to fetch all leave details
+    leave_list = frappe.db.sql("""
+        SELECT ec.document_name, e.name,ec.expiry_date
+        FROM tabEmployee e
+        JOIN `tabCompliance Checklist` ec ON e.name = ec.parent
+        
+    """, as_dict=True)
+    print(leave_list,"leave list")
+    # Create a response dictionary with the required information
+    
+    return leave_list
+
+
+
+
 
 
 @frappe.whitelist()
@@ -433,3 +503,4 @@ def change_project_date(event_id, start_date, end_date):
     #     print("Last Task name linked to the project:", last_task_name)
     # else:
     #     print("No tasks linked to the project.")
+
