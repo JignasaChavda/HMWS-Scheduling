@@ -1,3 +1,4 @@
+
 var initializeCalendar = function (events) {
     var calendarEl = document.getElementById('calendar');
 
@@ -135,29 +136,31 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 	//Booking
 	// add a Project to select field of Booking y
 	function frappeProject2() {
-        frappe.call({
-            method: "frappe.client.get_list",
-            args: {
-                doctype: "Project",
-                fields: ["project_name", "status", "name"],
-            },
-            callback: function (r) {
-                let resp_data = r.message;
-                console.log(resp_data);
-
-                let select_div = document.getElementById("project_select_Booking");
-				console.log("frappeProject")
-
-                resp_data.forEach((data) => {
-                    // Check if the status is not equal to "completed"
-                    if (data.status !== "Completed") {
-                        let option = document.createElement("option");
-                        option.text = data.name;
-                        select_div.appendChild(option);
-                    }
-                });
-            },
-        });
+		frappe.call({
+			method: "frappe.client.get_list",
+			args: {
+				doctype: "Project",
+				fields: ["project_name", "status", "name"],
+			},
+			callback: function (r) {
+				let resp_data = r.message;
+				console.log(resp_data);
+	
+				let select_div = $("#project_select_Booking");
+				console.log("frappeProject");
+	
+				resp_data.forEach((data) => {
+					// Check if the status is not equal to "completed"
+					if (data.status !== "Completed") {
+						let option = new Option(data.name, data.name);
+						select_div.append(option);
+					}
+				});
+	
+				// Trigger Select2 update after adding options
+				select_div.trigger("change");
+			},
+		});
 	}
 	
     function frappeProject() {
@@ -253,7 +256,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
                     title: data.name + " - " + data.custom_vehicle,
                     start: data.exp_start_date,
                     end: data.exp_end_date,
-                    url: "http://127.0.0.1:8006/app/task/" + data.name,
+                    url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
                     color: '#ADD918',
                     textColor: 'black'
                 };
@@ -348,7 +351,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 														title: data[i1].employee_id+ "||On Leave  " ,
 														start: data[i1].from_date,
 														end: data[i1].to_date,
-														url: "http://127.0.0.1:8006/app/leave-application/" + data[i1].leave_id,
+														url: "https://hmws-ei-inva.frappe.cloud/app/leave-application/" + data[i1].leave_id,
 														color: ' #55A5FA',
 														textColor: 'black'
 													};
@@ -371,7 +374,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 										title: concatenatedValues+"||"+data.project+"||"+data.name   ,
 										start: data.exp_start_date,
 										end: data.exp_end_date,
-										url: "http://127.0.0.1:8006/app/task/" + data.name,
+										url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
 										color: '#55A5FA',
 										textColor: 'black'
 									};
@@ -396,7 +399,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 														id: certificate.name+ "- Expired:"+ certificate.document_name ,
 														title: certificate.name+ "- Expired:"+ certificate.document_name ,
 														start: certificate.expiry_date,
-														url: "http://127.0.0.1:8006/app/task/" + certificate.leave_id,
+														url: "https://hmws-ei-inva.frappe.cloud/app/task/" + certificate.leave_id,
 														color: '#55A5FA',
 														textColor: 'black'
 													};
@@ -493,7 +496,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 										title: concatenatedValues+"||"+data.project+"||"+data.name   ,
 										start: data.exp_start_date,
 										end: data.exp_end_date,
-										url: "http://127.0.0.1:8006/app/task/" + data.name,
+										url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
 										color: '#55A5FA',
 										textColor: 'black'
 									};
@@ -524,7 +527,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 									title: data.employee + " - " + "On Leave",
 									start: data.from_date,
 									end: data.to_date,
-									url: "http://127.0.0.1:8006/app/task/" + data.name,
+									url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
 									color: '#55A5FA',
 									textColor: 'black'
 								};
@@ -553,7 +556,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 									id: certificate.name+ "- Expired:"+ certificate.document_name ,
 									title: certificate.name+ "- Expired:"+ certificate.document_name ,
 									start: certificate.expiry_date,
-									url: "http://127.0.0.1:8006/app/task/" + certificate.name,
+									url: "https://hmws-ei-inva.frappe.cloud/app/task/" + certificate.name,
 									color: '#55A5FA',
 									textColor: 'black'
 								};
@@ -600,7 +603,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 							title: resp_data.project_name,
 							start: resp_data.expected_start_date,
 							end: resp_data.expected_end_date,
-							url: "http://127.0.0.1:8006/app/project/" + resp_data.name,
+							url: "https://hmws-ei-inva.frappe.cloud/app/project/" + resp_data.name,
 							color: '#FFAC33',
 							textColor: 'black'
 						};
@@ -648,7 +651,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 												  title: data.name + " - " + data.custom_kit + "-" + data.custom_vehicle + " - "+(x.length !== 0 ? x[0].custom_employee : ""),
 												  start: data.exp_start_date,
 												  end: data.exp_end_date,
-												  url: "http://127.0.0.1:8006/app/task/" + data.name,
+												  url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
 												  color: '#ADD918',
 												  textColor: 'black'
 											  };
@@ -889,7 +892,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 	// 						title: "Leave || " + data[i1].employee_id,
 	// 						start: data[i1].from_date,
 	// 						end: data[i1].to_date,
-	// 						url: "http://127.0.0.1:8006/app/leave-application/" + data[i1].leave_id,
+	// 						url: "https://hmws-ei-inva.frappe.cloud/app/leave-application/" + data[i1].leave_id,
 	// 						color: '#ACCBF3',
 	// 						textColor: 'black'
 	// 					};
@@ -927,7 +930,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 						title: "Leave || " + document.getElementById("employee_select").value ,
 						start: data.start_date[i1],
 						end: data.end_date[i1],
-						url: "http://127.0.0.1:8006/app/leave-application/" + data.leave_id[i1],
+						url: "https://hmws-ei-inva.frappe.cloud/app/leave-application/" + data.leave_id[i1],
 						color: '#ACCBF3',
 						textColor: 'black'
 					};
@@ -966,7 +969,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 								title: "Booked || " + document.getElementById("employee_select").value,
 								start: data.start_date[i1],
 								end: data.end_date[i1],
-								url: "http://127.0.0.1:8006/app/booking/" + data.book_id[i1],
+								url: "https://hmws-ei-inva.frappe.cloud/app/booking/" + data.book_id[i1],
 								color: '#ACCBF3',
 								textColor: 'black'
 							};
@@ -1007,7 +1010,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 										title: "Certificate || " + document.getElementById("employee_select").value,
 										start: data.expiry_dates[i1],
 										
-										url: "http://127.0.0.1:8006/app/booking/" + data.document_names[i1],
+										url: "https://hmws-ei-inva.frappe.cloud/app/booking/" + data.document_names[i1],
 										color: 'pink',
 										textColor: 'black'
 									};
@@ -1179,7 +1182,7 @@ function project_data() {
                         title: resp_data.project_name,
                         start: resp_data.expected_start_date,
                         end: resp_data.expected_end_date,
-                        url: "http://127.0.0.1:8006/app/project/" + resp_data.name,
+                        url: "https://hmws-ei-inva.frappe.cloud/app/project/" + resp_data.name,
                         color: '#F5B411',
                         textColor: 'black'
                     };
@@ -1219,7 +1222,7 @@ function selected_project_onload() {
                         title: resp_data.project_name,
                         start: resp_data.expected_start_date,
                         end: resp_data.expected_end_date,
-                        url: "http://127.0.0.1:8006/app/project/" + resp_data.name,
+                        url: "https://hmws-ei-inva.frappe.cloud/app/project/" + resp_data.name,
                         color: '#FFAC33',
                         textColor: 'black'
                     };
@@ -1285,7 +1288,7 @@ function select_job_data() {
                             title:  data.name + " - " + data.project,
                             start: data.exp_start_date,
                             end: data.exp_end_date,
-                            url: "http://127.0.0.1:8006/app/task/" + data.name,
+                            url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
                             color: '#ADD918',
                             textColor: 'black'
                         };
@@ -1318,7 +1321,7 @@ function all_emp_leave() {
                     title: data.employee + " - " + data.name,
                     start: data.from_date,
                     end: data.to_date,
-                    url: "http://127.0.0.1:8006/app/task/" + data.name,
+                    url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
                     color: 'red',
                     textColor: 'black'
                 };
@@ -1361,7 +1364,7 @@ function job_data() {
 						title: data.name + " - " + data.project,
 						start: data.exp_start_date,
 						end: data.exp_end_date,
-						url: "http://127.0.0.1:8006/app/task/" + data.name,
+						url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
 						color: '#A8DB20',
 						textColor: 'black'
 					};
@@ -1382,10 +1385,22 @@ function clearCalendar() {
 }
 
 
-
-
-
-
+function alertmsg(){
+	
+		// Get the element by its ID
+		console.log("DOM fully loaded and parsed");
+		// var element = document.getElementById('fc-dom-24');
+	
+		// // Check if the element exists before adding the event listener
+		// if (element) {
+		//   // Add a click event listener
+		//   element.addEventListener('click', function() {
+		// 	// Show an alert when the element is clicked
+		// 	alert('Element clicked!'); 
+		//   });
+		// }
+	
+}
 
 // Add this function to handle the change in the "view By" dropdown
 function handleFilterChange() {
@@ -1445,7 +1460,7 @@ document.addEventListener("DOMContentLoaded", function () {
 var scriptselect = document.createElement('script');
 
 // Set the src attribute to the jQuery CDN
-scriptselect.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js';
+scriptselect.src = 'https://code.jquery.com/jquery-3.6.4.min.js';
 
 // Append the script element to the document's head
 document.head.appendChild(scriptselect);
@@ -1453,7 +1468,7 @@ document.head.appendChild(scriptselect);
 var scriptselect2 = document.createElement('script');
 
 // Set the src attribute to the jQuery CDN
-scriptselect2.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
+scriptselect2.src = "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js";
 
 // Append the script element to the document's head
 document.head.appendChild(scriptselect2);
@@ -1470,6 +1485,16 @@ script12.src = 'https://code.jquery.com/jquery-3.6.4.min.js';
 // Append the script element to the document's head
 document.head.appendChild(script12);
 
+
+var choosenjs= document.createElement('script')
+choosenjs.src='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js';
+document.head.appendChild(choosenjs);
+
+
+
+var choosencsss= document.createElement("link")
+choosencsss.src='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css';
+document.head.appendChild(choosencsss);
 
     let script1 = document.createElement("script");
     script1.innerHTML = `
@@ -1497,7 +1522,7 @@ document.head.appendChild(script12);
 		${all_emp_leave.toString()}
 		${project_data.toString()}
 		${selected_project_onload.toString()}
-		
+		${alertmsg.toString()}
 		${frappeTask.toString()}
 		${frappeProject2.toString()}
 		task_details();
@@ -1507,7 +1532,7 @@ document.head.appendChild(script12);
 		// all_emp_leave();
 		${selected_employee.toString()}
 		// selected_employee_alll();
-		
+		alertmsg();
 		
 		frappeTask();
 		updateSubTaskField();
@@ -1516,6 +1541,98 @@ document.head.appendChild(script12);
 		selected_project_onload()
 		// project_data();
 		// filter_project();
+
+		$(document).ready(function () {
+			var formVisible = false;
+		
+			$(".fc-daygrid-day-frame").on('dblclick tripleclick', function (event) {
+				var dateLabel = $(this).find(".fc-daygrid-day-top a").attr("aria-label");
+		
+				// You can use the dateLabel as needed, for example, display it in the console
+				console.log("Clicked date: " + dateLabel);
+		
+				// Set the date in the form if needed
+				$("#myForm input[name='date']").val(dateLabel);
+		
+				// Move the code to get selectTask inside the double-click event handler
+				var selectTask = document.getElementById("task_select").value;
+				console.log("selecttask of jquery", selectTask);
+				if (selectTask) {
+					// Call task_details_filter function
+					frappe.call({
+						method: "frappe.client.get_list",
+						args: {
+							doctype: "Task",
+							fields: ["*"],
+							filters: {
+								name: selectTask
+							}
+						},
+						callback: function (r) {
+							let task_data = r.message;
+							console.log(task_data, "");
+							$("#myForm input[name='name']").val(task_data[0].project);
+							$("#myForm input[name='vihical']").val(task_data[0].custom_vehicle);
+							$("#myForm input[name='kit']").val(task_data[0].custom_kit);
+							$("#myForm input[name='job']").val(task_data[0].name);
+						}
+					});
+					console.log("hello")
+				}
+		
+				// Set form position based on mouse coordinates
+				var mouseX = event.pageX;
+				var mouseY = event.pageY;
+		
+				// Adjust form position to center it on the mouse click
+				var formWidth = $("#myForm").outerWidth();
+				var formHeight = $("#myForm").outerHeight();
+				var offsetX = 10; // Adjust as needed for better positioning
+		
+				// Set form position
+				$("#myForm").css({
+					top: mouseY - formHeight / 2,
+					left: mouseX + offsetX,
+					display: "block"
+				});
+		
+				// Update the flag to indicate that the form is now visible
+				formVisible = true;
+		
+				// Prevent the click event from propagating to the document click handler
+				event.stopPropagation();
+			});
+		
+			// Add a click event to the document to hide the form when clicking outside it
+			$(document).on('dblclick tripleclick', function () {
+				if (formVisible) {
+					// Hide the form
+					$("#myForm").hide();
+		
+					// Update the flag to indicate that the form is now hidden
+					formVisible = false;
+				}
+			});
+		});
+		
+		
+		
+		
+
+		// $(document).ready(function () {
+		// 	// Initialize Select2 on your dropdown
+		// 	$('#project_select_Booking').chosen();
+		
+		// 	// Override the text color to red
+		// 	$('.select2-selection__rendered').css('color', 'red');
+		// });
+		
+		// $(document).ready(function () {
+		// 	$("#project_select_Booking").hide();
+		// });
+
+		
+		
 		`;
 
     setTimeout(() => {
@@ -1528,4 +1645,5 @@ document.head.appendChild(script12);
 	
 	
 }
+
 
