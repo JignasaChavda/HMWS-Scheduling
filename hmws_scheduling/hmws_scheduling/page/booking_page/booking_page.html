@@ -1,4 +1,3 @@
-
 <html lang="en">
     <head>
         
@@ -8,13 +7,20 @@
    
     <style>
         label{margin-bottom: 0 !important}
-        
+/*         
         .select2-selection__rendered ul {
             list-style: none;
             margin: 0;
             padding: 0;
-        }   
-        
+        }    */
+         /* CSS to hide the element */
+         #project_select_Booking {
+            display: none;
+        }
+        #task,#vehical,#kit,#sub_task,#job_role,#employee_select{
+            display: none;
+
+        }
         #myForm {
     position: fixed;
  
@@ -42,9 +48,11 @@
         margin-bottom: 8px;
         font-weight: bold;
     }
-
+    .with_form{
+        width: 100%;
+    }
     #myForm input {
-        /* width: 100%; */
+        
         padding: 8px;
         margin-bottom: 15px;
         box-sizing: border-box;
@@ -76,6 +84,42 @@
   .form-row input {
      width: 75%;/* Adjust the width as needed */
   }
+  .select2-results__options{
+    list-style-type: none;
+    background-color: aliceblue;
+  }
+  .temp-container{
+    display: block;
+  }
+  .show-search .select2-search {
+        display: block !important; /* Force display the search field */
+    }
+    .select2-selection__placeholder {
+            display: block;
+            background-color: #fff;
+            padding: 7px;
+            border-radius: 6px;
+        }
+        .select2-selection__rendered {
+            display: block;
+            background-color: #fff;
+            padding: 7px;
+            border-radius: 6px;
+        }
+        .box-css{
+            display: block;
+            background-color: #fff;
+            padding: 7px;
+            border-radius: 6px;
+        }
+
+
+    #task,#vehical,#kit,#sub_task,#job_role,#employee_select{
+        width: 21%;
+    }
+    
+        
+        
 
     </style>
    
@@ -83,10 +127,13 @@
 </head>
 <body>
     
-
+            <div>
+                
+                
+            </div>
              <div>
-                <div style="display: flex; flex-direction: row; gap: 50px; margin-left: 305px;">
-                    <div style="display: flex ; flex-direction: column; width: 25%;">
+                <div style="display: flex; flex-direction: row; gap: 50px; margin-left: 305px; " >
+                    <div style="display: flex ; flex-direction: column; width: 25%;gap: 5px;height: 120px;">
                     <label for="vehicle">View By:</label>
                     <select type="text" placeholder="Vehicle" id="vehicle" style="border-radius: 5px; padding: 10px 8px; border: 1px solid red;" onchange="handleFilterChange()">
                         <option value=""></option>
@@ -95,6 +142,8 @@
                         <option value="employee">Employee</option>
                     </select>
                     </div>
+
+                    
         
                     <div id="projectField" style="display: none;flex-direction: column;  gap: 5px; width: 25%;">
                         <label for="NewField2">Projects</label>
@@ -130,79 +179,92 @@
             
             <form style="background-color: #a7c1ea; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px;width: 300px;">
                 <span style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">Booking Form</span>
-                   
-                    <select placeholder="Select A Project" style="border-radius: 5px; border: 1px solid red;" id="project_select_Booking" onchange="selected_project()">
-                        <option value=""></option>
-                        <!-- Add your option elements here -->
-                    </select>
-             
-            
+                    Project:
+                   <div class="search_select_box">
+                        
+                        <select class="form-control"  placeholder="Select A Project" style="border-radius: 5px; border: 1px solid red;" id="project_select_Booking" onchange="selected_project()">
+                            <!-- Add your option elements here -->
+                            
+                            <option value=""></option>
+                            
+                        </select>
+                    </div>
+                
                 <label for="Task">Job:</label>
-                <select class="custom-select"    type="text" placeholder="Select A Task" style="border-radius: 5px;  border: 1px solid red;" id="task" onchange="task_details()">
-                    <option value=""></option>
+                
+                <select class="box-css" type="text" id="task" name="task" onchange="task_details()">
+                    <option value="">Select A Task</option>
+                    <!-- Add more options here -->
                 </select>
+                
                 <label for="Start Date">Start Date:</label>
-                <input type="date" id="start_date" style="border-radius: 5px;  border: 1px solid red;">
+                <input type="date" class="box-css" id="start_date" >
 
                 <label for="End Date">End Date:</label>
-                <input type="date" id="end_date" style="border-radius: 5px;  border: 1px solid red;">
+                <input class="box-css" type="date" id="end_date" >
 
                 <label for="vehical">Vehicle:</label>
-                <select class="custom-select" type="text" placeholder="Vehicle" id="vehical" style="border-radius: 5px;  border: 1px solid red;">
+                <select class=" box-css" type="text" placeholder="Vehicle" id="vehical" >
                 <option value=""></option>
                 </select>
             
                 <label for="kit">Kit:</label>
-                <select class="custom-select" type="text" placeholder="Kit" id="kit" style="border-radius: 5px;border: 1px solid red;">
+                <select class="box-css" type="text" placeholder="Kit" id="kit" >
                     <option value=""></option>
                 </select>
             
                 <label for="Sub Task">Sub Task:</label>
-                <select class="custom-select" type="text" placeholder="Sub Task" id="sub_task" style="border-radius: 5px;  border: 1px solid red;">
+                <select class="box-css" type="text" placeholder="Sub Task" id="sub_task" >
                 <option value=""></option></select>
 
                 <label for="job Role">Job Role:</label>
-                <select class="custom-select" type="text" placeholder="Job Role" id="job_role" style="border-radius: 5px;  border: 1px solid red;" onchange="get_employee()">
+                <select class="box-css" type="text" placeholder="Job Role" id="job_role"  onchange="get_employee()">
                 <option value=""></option></select>
 
                 <label for="Employee">Employee:</label>
-                <select class="custom-select" type="text" placeholder="Select A Project" style="border-radius: 5px;  border: 1px solid red;" id="employee_select" onchange="selected_employee()">
+                <select class="box-css" type="text" placeholder="Select A Project" id="employee_select" onchange="selected_employee()">
                     <option value=""></option>
                 </select>
-                <button onclick="myfunc()" style="margin-top: 10px;">Submit</button>
+                <button onclick="myfunc()" style="margin-top: 10px;" class="box-css">Schedule</button>
                 
             </form>
             
             
         </div>
         <form id="myForm">
-            <!-- Your form elements go here -->
-            <label for="name">Project Name:</label>
-            <input type="text" id="name" name="name"><br>
-            <label for="name">Job</label>
-            <input type="text" id="job" name="job">
-            <div style="display: flex;">
-            <div class="form-row">
-                <label for="name">Vihical:</label>
-                <input type="text" id="vihical" name="vihical">
-            </div>
-            <div class="form-row">
-                <label for="name">Kit:</label>
-                <input type="text" id="kit" name="kit">
-            </div>
+            <label for="name" >Date:</label>
+            <input type="text" class="with_form" id="date" name="date" readonly><br> <!-- Adding readonly attribute to prevent editing -->
+            <label for="name" >Project Name:</label>
+            <input type="text" class="with_form" id="name" name="name"><br>
+            <label for="name" >Job</label>
+            <input type="text" class="with_form" id="job" name="job">
+            <div class="d-flex justify-content-between with_form ">
+                <div class="form-row ">
+                    <label for="name">Vehicle:</label>
+                    <input  type="text" id="vehicle" name="vehicle">
+                </div>
+                <div class="form-row">
+                    <label for="name">Kit:</label>
+                    <input style="width: 100%;" type="text" id="kit" name="kit">
+                </div>
             </div>
             <label for="name">Subtask</label>
-            <input type="text" id="subtask" name="subtask">
+            <input class="with_form" type="text" id="subtask" name="subtask">
             <label for="name">Employee</label>
-            <input type="text" id="employee" name="employee"><br>
+            <input class="with_form" type="text" id="employee" name="employee"><br>
+            <!-- Close button -->
+            <div class="d-flex justify-content-between ">
+            <button style="width: 81px;" type="button" id="closeForm">Close</button>
             <!-- Add other form elements as needed -->
             <button type="submit">Schedule</button>
-            </form>
+            </div>
+        </form>
+        
         <div style="display: flex; flex-direction: row; width: 100%;">
             <div style=" border-radius: 8px; display: flex; flex-direction: column; width: 100%;">
                 
                 
-                <div id="calendar" style="background-color: #fff; width: 100%; margin-top: 20px;"></div>
+                <div id="calendar" style="background-color: #fff; width: 100%; "></div>
             </div>
         </div>
         
@@ -214,5 +276,6 @@
     
 </body>
 </html>
+
 
 

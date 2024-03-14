@@ -1,4 +1,3 @@
-
 var initializeCalendar = function (events) {
     var calendarEl = document.getElementById('calendar');
 
@@ -256,7 +255,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
                     title: data.name + " - " + data.custom_vehicle,
                     start: data.exp_start_date,
                     end: data.exp_end_date,
-                    url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
+                    url: "http://127.0.0.1:8006/app/task/" + data.name,
                     color: '#ADD918',
                     textColor: 'black'
                 };
@@ -351,7 +350,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 														title: data[i1].employee_id+ "||On Leave  " ,
 														start: data[i1].from_date,
 														end: data[i1].to_date,
-														url: "https://hmws-ei-inva.frappe.cloud/app/leave-application/" + data[i1].leave_id,
+														url: "http://127.0.0.1:8006/app/leave-application/" + data[i1].leave_id,
 														color: ' #55A5FA',
 														textColor: 'black'
 													};
@@ -374,7 +373,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 										title: concatenatedValues+"||"+data.project+"||"+data.name   ,
 										start: data.exp_start_date,
 										end: data.exp_end_date,
-										url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
+										url: "http://127.0.0.1:8006/app/task/" + data.name,
 										color: '#55A5FA',
 										textColor: 'black'
 									};
@@ -399,7 +398,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 														id: certificate.name+ "- Expired:"+ certificate.document_name ,
 														title: certificate.name+ "- Expired:"+ certificate.document_name ,
 														start: certificate.expiry_date,
-														url: "https://hmws-ei-inva.frappe.cloud/app/task/" + certificate.leave_id,
+														url: "http://127.0.0.1:8006/app/task/" + certificate.leave_id,
 														color: '#55A5FA',
 														textColor: 'black'
 													};
@@ -496,7 +495,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 										title: concatenatedValues+"||"+data.project+"||"+data.name   ,
 										start: data.exp_start_date,
 										end: data.exp_end_date,
-										url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
+										url: "http://127.0.0.1:8006/app/task/" + data.name,
 										color: '#55A5FA',
 										textColor: 'black'
 									};
@@ -527,7 +526,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 									title: data.employee + " - " + "On Leave",
 									start: data.from_date,
 									end: data.to_date,
-									url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
+									url: "http://127.0.0.1:8006/app/task/" + data.name,
 									color: '#55A5FA',
 									textColor: 'black'
 								};
@@ -556,7 +555,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 									id: certificate.name+ "- Expired:"+ certificate.document_name ,
 									title: certificate.name+ "- Expired:"+ certificate.document_name ,
 									start: certificate.expiry_date,
-									url: "https://hmws-ei-inva.frappe.cloud/app/task/" + certificate.name,
+									url: "http://127.0.0.1:8006/app/task/" + certificate.name,
 									color: '#55A5FA',
 									textColor: 'black'
 								};
@@ -603,7 +602,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 							title: resp_data.project_name,
 							start: resp_data.expected_start_date,
 							end: resp_data.expected_end_date,
-							url: "https://hmws-ei-inva.frappe.cloud/app/project/" + resp_data.name,
+							url: "http://127.0.0.1:8006/app/project/" + resp_data.name,
 							color: '#FFAC33',
 							textColor: 'black'
 						};
@@ -651,7 +650,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 												  title: data.name + " - " + data.custom_kit + "-" + data.custom_vehicle + " - "+(x.length !== 0 ? x[0].custom_employee : ""),
 												  start: data.exp_start_date,
 												  end: data.exp_end_date,
-												  url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
+												  url: "http://127.0.0.1:8006/app/task/" + data.name,
 												  color: '#ADD918',
 												  textColor: 'black'
 											  };
@@ -892,7 +891,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 	// 						title: "Leave || " + data[i1].employee_id,
 	// 						start: data[i1].from_date,
 	// 						end: data[i1].to_date,
-	// 						url: "https://hmws-ei-inva.frappe.cloud/app/leave-application/" + data[i1].leave_id,
+	// 						url: "http://127.0.0.1:8006/app/leave-application/" + data[i1].leave_id,
 	// 						color: '#ACCBF3',
 	// 						textColor: 'black'
 	// 					};
@@ -930,7 +929,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 						title: "Leave || " + document.getElementById("employee_select").value ,
 						start: data.start_date[i1],
 						end: data.end_date[i1],
-						url: "https://hmws-ei-inva.frappe.cloud/app/leave-application/" + data.leave_id[i1],
+						url: "http://127.0.0.1:8006/app/leave-application/" + data.leave_id[i1],
 						color: '#ACCBF3',
 						textColor: 'black'
 					};
@@ -969,7 +968,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 								title: "Booked || " + document.getElementById("employee_select").value,
 								start: data.start_date[i1],
 								end: data.end_date[i1],
-								url: "https://hmws-ei-inva.frappe.cloud/app/booking/" + data.book_id[i1],
+								url: "http://127.0.0.1:8006/app/booking/" + data.book_id[i1],
 								color: '#ACCBF3',
 								textColor: 'black'
 							};
@@ -1010,7 +1009,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 										title: "Certificate || " + document.getElementById("employee_select").value,
 										start: data.expiry_dates[i1],
 										
-										url: "https://hmws-ei-inva.frappe.cloud/app/booking/" + data.document_names[i1],
+										url: "http://127.0.0.1:8006/app/booking/" + data.document_names[i1],
 										color: 'pink',
 										textColor: 'black'
 									};
@@ -1182,7 +1181,7 @@ function project_data() {
                         title: resp_data.project_name,
                         start: resp_data.expected_start_date,
                         end: resp_data.expected_end_date,
-                        url: "https://hmws-ei-inva.frappe.cloud/app/project/" + resp_data.name,
+                        url: "http://127.0.0.1:8006/app/project/" + resp_data.name,
                         color: '#F5B411',
                         textColor: 'black'
                     };
@@ -1222,7 +1221,7 @@ function selected_project_onload() {
                         title: resp_data.project_name,
                         start: resp_data.expected_start_date,
                         end: resp_data.expected_end_date,
-                        url: "https://hmws-ei-inva.frappe.cloud/app/project/" + resp_data.name,
+                        url: "http://127.0.0.1:8006/app/project/" + resp_data.name,
                         color: '#FFAC33',
                         textColor: 'black'
                     };
@@ -1288,7 +1287,7 @@ function select_job_data() {
                             title:  data.name + " - " + data.project,
                             start: data.exp_start_date,
                             end: data.exp_end_date,
-                            url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
+                            url: "http://127.0.0.1:8006/app/task/" + data.name,
                             color: '#ADD918',
                             textColor: 'black'
                         };
@@ -1321,7 +1320,7 @@ function all_emp_leave() {
                     title: data.employee + " - " + data.name,
                     start: data.from_date,
                     end: data.to_date,
-                    url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
+                    url: "http://127.0.0.1:8006/app/task/" + data.name,
                     color: 'red',
                     textColor: 'black'
                 };
@@ -1364,7 +1363,7 @@ function job_data() {
 						title: data.name + " - " + data.project,
 						start: data.exp_start_date,
 						end: data.exp_end_date,
-						url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
+						url: "http://127.0.0.1:8006/app/task/" + data.name,
 						color: '#A8DB20',
 						textColor: 'black'
 					};
@@ -1483,17 +1482,17 @@ var script12 = document.createElement('script');
 script12.src = 'https://code.jquery.com/jquery-3.6.4.min.js';
 
 // Append the script element to the document's head
-document.head.appendChild(script12);
+document.body.appendChild(script12);
 
 
 var choosenjs= document.createElement('script')
-choosenjs.src='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js';
-document.head.appendChild(choosenjs);
+choosenjs.src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js';
+document.body.appendChild(choosenjs);
 
 
 
 var choosencsss= document.createElement("link")
-choosencsss.src='https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css';
+choosencsss.href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css';
 document.head.appendChild(choosencsss);
 
     let script1 = document.createElement("script");
@@ -1545,8 +1544,9 @@ document.head.appendChild(choosencsss);
 		$(document).ready(function () {
 			var formVisible = false;
 		
-			$(".fc-daygrid-day-frame").on('dblclick tripleclick', function (event) {
+			$(".fc-daygrid-day-frame").dblclick(function (event) {
 				var dateLabel = $(this).find(".fc-daygrid-day-top a").attr("aria-label");
+
 		
 				// You can use the dateLabel as needed, for example, display it in the console
 				console.log("Clicked date: " + dateLabel);
@@ -1557,6 +1557,17 @@ document.head.appendChild(choosencsss);
 				// Move the code to get selectTask inside the double-click event handler
 				var selectTask = document.getElementById("task_select").value;
 				console.log("selecttask of jquery", selectTask);
+				$(selectTask).change(function () {
+					var selectedTask = $(this).val();
+		
+					// If the selected task changes, clear the related inputs in the form
+					if (selectedTask === "") {
+						$("#myForm input[name='name']").val("");
+						$("#myForm input[name='vihical']").val("");
+						$("#myForm input[name='kit']").val("");
+						$("#myForm input[name='job']").val("");
+					}
+				});
 				if (selectTask) {
 					// Call task_details_filter function
 					frappe.call({
@@ -1575,6 +1586,10 @@ document.head.appendChild(choosencsss);
 							$("#myForm input[name='vihical']").val(task_data[0].custom_vehicle);
 							$("#myForm input[name='kit']").val(task_data[0].custom_kit);
 							$("#myForm input[name='job']").val(task_data[0].name);
+							// $("#myForm input[name='employee']").val(""); // You need to s
+				
+							
+							
 						}
 					});
 					console.log("hello")
@@ -1604,7 +1619,7 @@ document.head.appendChild(choosencsss);
 			});
 		
 			// Add a click event to the document to hide the form when clicking outside it
-			$(document).on('dblclick tripleclick', function () {
+			$(document).dblclick(function () {
 				if (formVisible) {
 					// Hide the form
 					$("#myForm").hide();
@@ -1615,21 +1630,309 @@ document.head.appendChild(choosencsss);
 			});
 		});
 		
-		
-		
+		$(document).ready(function() {
+			// Function to update date value and close the form
+			function updateDateAndCloseForm(dateLabel) {
+				$("#myForm input[name='date']").val(dateLabel);
+				$("#myForm").hide();
+			}
+	
+			// Event listener for close button
+			$("#closeForm").click(function() {
+				$("#myForm").hide();
+			});
+	
+			// Assuming you have a function to get the date label
+			var dateLabel = getDateLabel(); // You need to define this function
+	
+			// Call the function to update date value and close the form
+			updateDateAndCloseForm(dateLabel);
+		});
 		
 
-		// $(document).ready(function () {
-		// 	// Initialize Select2 on your dropdown
-		// 	$('#project_select_Booking').chosen();
+		// Check if jQuery is loaded
+		// Check if jQuery is loaded
+		$(document).ready(function() {
+			console.log("Document ready function fired.");
 		
-		// 	// Override the text color to red
-		// 	$('.select2-selection__rendered').css('color', 'red');
-		// });
+			// Initialize Select2 for the select field with ID "project_select_Booking"
+			$('#project_select_Booking').select2({
+				theme: 'bootstrap4', // Optionally, specify the theme
+				placeholder: "",
+				allowClear: true, // Optionally, specify a placeholder
+			});
 		
-		// $(document).ready(function () {
-		// 	$("#project_select_Booking").hide();
-		// });
+			// Show the search field when the dropdown is opened
+			$('.select2-container--bootstrap4').on('click', function() {
+				$('.select2-search').css('display', 'block');
+			});
+		
+			// Add event listener to apply styles when selection rendered is clicked
+			$('.select2-selection__rendered').on('click', function() {
+				$(this).addClass('clicked');
+			});
+		
+			// Add class after two seconds
+			$('#project_select_Booking').on('select2:open', function () {
+				setTimeout(function() {
+					$('.select2-selection__rendered').addClass('delayed');
+				}, 125); // 2000 milliseconds = 2 seconds
+			});
+		
+			// Add event listener for change event
+			$('#project_select_Booking').on('change', function() {
+				// Check if the value is empty (option removed)
+				if (!$(this).val()) {
+					// Remove the 'clicked' class
+					$('.select2-selection__rendered').removeClass('clicked');
+					// Call your function here
+					selected_project();
+				}
+			});
+		});
+
+		$(document).ready(function() {
+			console.log("Document ready function fired.");
+	
+			// Initialize Select2 for the select field with ID "task"
+			$('#task').select2({
+				theme: 'bootstrap4', // Optionally, specify the theme
+				placeholder: "",
+				allowClear: true, // Optionally, specify a placeholder
+			});
+	
+			// Show the search field when the dropdown is opened
+			// $('.select2-container--bootstrap4').on('click', function() {
+			// 	$('.select2-search').css('display', 'block');
+			// });
+	
+			// Add event listener to apply styles when selection rendered is clicked
+			$('.select2-selection__rendered').on('click', function() {
+				$(this).addClass('clicked');
+			});
+	
+			// Add class after two seconds
+			$('#task').on('select2:open', function () { // Corrected the event name
+				setTimeout(function() {
+					$('.select2-selection__rendered').addClass('delayed');
+				}, 125); // 2000 milliseconds = 2 seconds
+			});
+	
+			// Add event listener for change event
+			$('#task').on('change', function() { // Corrected the ID used
+				// Check if the value is empty (option removed)
+				if (!$(this).val()) {
+					// Remove the 'clicked' class
+					$('.select2-selection__rendered').removeClass('clicked');
+					// Call your function here
+					task_details(); // Assuming task_details() is a defined function
+				}
+			});
+		});
+
+
+		$(document).ready(function() {
+			console.log("Document ready function fired.");
+	
+			// Initialize Select2 for the select field with ID "task"
+			$('#vehical').select2({
+				theme: 'bootstrap4', // Optionally, specify the theme
+				placeholder: "",
+				allowClear: true, // Optionally, specify a placeholder
+			});
+	
+			// Show the search field when the dropdown is opened
+			// $('.select2-container--bootstrap4').on('click', function() {
+			// 	$('.select2-search').css('display', 'block');
+			// });
+	
+			// Add event listener to apply styles when selection rendered is clicked
+			$('.select2-selection__rendered').on('click', function() {
+				$(this).addClass('clicked');
+			});
+	
+			// Add class after two seconds
+			$('#task').on('select2:open', function () { // Corrected the event name
+				setTimeout(function() {
+					$('.select2-selection__rendered').addClass('delayed');
+				}, 125); // 2000 milliseconds = 2 seconds
+			});
+	
+			// Add event listener for change event
+			$('#task').on('change', function() { // Corrected the ID used
+				// Check if the value is empty (option removed)
+				if (!$(this).val()) {
+					// Remove the 'clicked' class
+					$('.select2-selection__rendered').removeClass('clicked');
+					// Call your function here
+					task_details(); // Assuming task_details() is a defined function
+				}
+			});
+		});
+		
+
+		$(document).ready(function() {
+			console.log("Document ready function fired.");
+	
+			// Initialize Select2 for the select field with ID "task"
+			$('#kit').select2({
+				theme: 'bootstrap4', // Optionally, specify the theme
+				placeholder: "",
+				allowClear: true, // Optionally, specify a placeholder
+			});
+	
+			// Show the search field when the dropdown is opened
+			// $('.select2-container--bootstrap4').on('click', function() {
+			// 	$('.select2-search').css('display', 'block');
+			// });
+	
+			// Add event listener to apply styles when selection rendered is clicked
+			$('.select2-selection__rendered').on('click', function() {
+				$(this).addClass('clicked');
+			});
+	
+			// Add class after two seconds
+			$('#task').on('select2:open', function () { // Corrected the event name
+				setTimeout(function() {
+					$('.select2-selection__rendered').addClass('delayed');
+				}, 125); // 2000 milliseconds = 2 seconds
+			});
+	
+			// Add event listener for change event
+			$('#task').on('change', function() { // Corrected the ID used
+				// Check if the value is empty (option removed)
+				if (!$(this).val()) {
+					// Remove the 'clicked' class
+					$('.select2-selection__rendered').removeClass('clicked');
+					// Call your function here
+					task_details(); // Assuming task_details() is a defined function
+				}
+			});
+		});
+
+
+		$(document).ready(function() {
+			console.log("Document ready function fired.");
+	
+			// Initialize Select2 for the select field with ID "task"
+			$('#sub_task').select2({
+				theme: 'bootstrap4', // Optionally, specify the theme
+				placeholder: "",
+				allowClear: true, // Optionally, specify a placeholder
+			});
+	
+			// Show the search field when the dropdown is opened
+			// $('.select2-container--bootstrap4').on('click', function() {
+			// 	$('.select2-search').css('display', 'block');
+			// });
+	
+			// Add event listener to apply styles when selection rendered is clicked
+			$('.select2-selection__rendered').on('click', function() {
+				$(this).addClass('clicked');
+			});
+	
+			// Add class after two seconds
+			$('#task').on('select2:open', function () { // Corrected the event name
+				setTimeout(function() {
+					$('.select2-selection__rendered').addClass('delayed');
+				}, 125); // 2000 milliseconds = 2 seconds
+			});
+	
+			// Add event listener for change event
+			$('#task').on('change', function() { // Corrected the ID used
+				// Check if the value is empty (option removed)
+				if (!$(this).val()) {
+					// Remove the 'clicked' class
+					$('.select2-selection__rendered').removeClass('clicked');
+					// Call your function here
+					task_details(); // Assuming task_details() is a defined function
+				}
+			});
+		});
+
+
+		$(document).ready(function() {
+			console.log("Document ready function fired.");
+	
+			// Initialize Select2 for the select field with ID "task"
+			$('#job_role').select2({
+				theme: 'bootstrap4', // Optionally, specify the theme
+				placeholder: "",
+				allowClear: true, // Optionally, specify a placeholder
+			});
+	
+			// Show the search field when the dropdown is opened
+			// $('.select2-container--bootstrap4').on('click', function() {
+			// 	$('.select2-search').css('display', 'block');
+			// });
+	
+			// Add event listener to apply styles when selection rendered is clicked
+			$('.select2-selection__rendered').on('click', function() {
+				$(this).addClass('clicked');
+			});
+	
+			// Add class after two seconds
+			$('#task').on('select2:open', function () { // Corrected the event name
+				setTimeout(function() {
+					$('.select2-selection__rendered').addClass('delayed');
+				}, 125); // 2000 milliseconds = 2 seconds
+			});
+	
+			// Add event listener for change event
+			$('#task').on('change', function() { // Corrected the ID used
+				// Check if the value is empty (option removed)
+				if (!$(this).val()) {
+					// Remove the 'clicked' class
+					$('.select2-selection__rendered').removeClass('clicked');
+					// Call your function here
+					task_details(); // Assuming task_details() is a defined function
+				}
+			});
+		});
+		
+
+		
+		$(document).ready(function() {
+			console.log("Document ready function fired.");
+	
+			// Initialize Select2 for the select field with ID "task"
+			$('#employee_select').select2({
+				theme: 'bootstrap4', // Optionally, specify the theme
+				placeholder: "",
+				allowClear: true, // Optionally, specify a placeholder
+			});
+	
+			// Show the search field when the dropdown is opened
+			// $('.select2-container--bootstrap4').on('click', function() {
+			// 	$('.select2-search').css('display', 'block');
+			// });
+	
+			// Add event listener to apply styles when selection rendered is clicked
+			$('.select2-selection__rendered').on('click', function() {
+				$(this).addClass('clicked');
+			});
+	
+			// Add class after two seconds
+			$('#task').on('select2:open', function () { // Corrected the event name
+				setTimeout(function() {
+					$('.select2-selection__rendered').addClass('delayed');
+				}, 125); // 2000 milliseconds = 2 seconds
+			});
+	
+			// Add event listener for change event
+			$('#task').on('change', function() { // Corrected the ID used
+				// Check if the value is empty (option removed)
+				if (!$(this).val()) {
+					// Remove the 'clicked' class
+					$('.select2-selection__rendered').removeClass('clicked');
+					// Call your function here
+					task_details(); // Assuming task_details() is a defined function
+				}
+			});
+		});
+		
+		
+		
 
 		
 		
@@ -1645,5 +1948,6 @@ document.head.appendChild(choosencsss);
 	
 	
 }
+
 
 
