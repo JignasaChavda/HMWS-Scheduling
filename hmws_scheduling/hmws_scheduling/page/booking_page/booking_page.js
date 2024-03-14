@@ -259,7 +259,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
                     title: data.name + " - " + data.custom_vehicle,
                     start: data.exp_start_date,
                     end: data.exp_end_date,
-                    url: "http://127.0.0.1:8006/app/task/" + data.name,
+                    url: "https://hmws-ei-inva.frappe.cloud/app/task/view/list/" + data.name,
                     color: '#ADD918',
                     textColor: 'black'
                 };
@@ -354,7 +354,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 														title: data[i1].employee_id+ "||On Leave  " ,
 														start: data[i1].from_date,
 														end: data[i1].to_date,
-														url: "http://127.0.0.1:8006/app/leave-application/" + data[i1].leave_id,
+														url: "https://hmws-ei-inva.frappe.cloud/app/leave-application/" + data[i1].leave_id,
 														color: ' #55A5FA',
 														textColor: 'black'
 													};
@@ -377,7 +377,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 										title: concatenatedValues+"||"+data.project+"||"+data.name   ,
 										start: data.exp_start_date,
 										end: data.exp_end_date,
-										url: "http://127.0.0.1:8006/app/task/" + data.name,
+										url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
 										color: '#55A5FA',
 										textColor: 'black'
 									};
@@ -402,7 +402,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 														id: certificate.name+ "- Expired:"+ certificate.document_name ,
 														title: certificate.name+ "- Expired:"+ certificate.document_name ,
 														start: certificate.expiry_date,
-														url: "http://127.0.0.1:8006/app/task/" + certificate.leave_id,
+														url: "https://hmws-ei-inva.frappe.cloud/app/task/" + certificate.leave_id,
 														color: '#55A5FA',
 														textColor: 'black'
 													};
@@ -499,7 +499,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 										title: concatenatedValues+"||"+data.project+"||"+data.name   ,
 										start: data.exp_start_date,
 										end: data.exp_end_date,
-										url: "http://127.0.0.1:8006/app/task/" + data.name,
+										url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
 										color: '#55A5FA',
 										textColor: 'black'
 									};
@@ -530,7 +530,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 									title: data.employee + " - " + "On Leave",
 									start: data.from_date,
 									end: data.to_date,
-									url: "http://127.0.0.1:8006/app/task/" + data.name,
+									url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
 									color: '#55A5FA',
 									textColor: 'black'
 								};
@@ -559,7 +559,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 									id: certificate.name+ "- Expired:"+ certificate.document_name ,
 									title: certificate.name+ "- Expired:"+ certificate.document_name ,
 									start: certificate.expiry_date,
-									url: "http://127.0.0.1:8006/app/task/" + certificate.name,
+									url: "https://hmws-ei-inva.frappe.cloud/app/task/" + certificate.name,
 									color: '#55A5FA',
 									textColor: 'black'
 								};
@@ -606,7 +606,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 							title: resp_data.project_name,
 							start: resp_data.expected_start_date,
 							end: resp_data.expected_end_date,
-							url: "http://127.0.0.1:8006/app/project/" + resp_data.name,
+							url: "https://hmws-ei-inva.frappe.cloud/app/project/" + resp_data.name,
 							color: '#FFAC33',
 							textColor: 'black'
 						};
@@ -654,7 +654,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 												  title: data.name + " - " + data.custom_kit + "-" + data.custom_vehicle + " - "+(x.length !== 0 ? x[0].custom_employee : ""),
 												  start: data.exp_start_date,
 												  end: data.exp_end_date,
-												  url: "http://127.0.0.1:8006/app/task/" + data.name,
+												  url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
 												  color: '#ADD918',
 												  textColor: 'black'
 											  };
@@ -895,7 +895,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 	// 						title: "Leave || " + data[i1].employee_id,
 	// 						start: data[i1].from_date,
 	// 						end: data[i1].to_date,
-	// 						url: "http://127.0.0.1:8006/app/leave-application/" + data[i1].leave_id,
+	// 						url: "https://hmws-ei-inva.frappe.cloud/app/leave-application/" + data[i1].leave_id,
 	// 						color: '#ACCBF3',
 	// 						textColor: 'black'
 	// 					};
@@ -933,7 +933,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 						title: "Leave || " + document.getElementById("employee_select").value ,
 						start: data.start_date[i1],
 						end: data.end_date[i1],
-						url: "http://127.0.0.1:8006/app/leave-application/" + data.leave_id[i1],
+						url: "https://hmws-ei-inva.frappe.cloud/app/leave-application/" + data.leave_id[i1],
 						color: '#ACCBF3',
 						textColor: 'black'
 					};
@@ -972,7 +972,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 								title: "Booked || " + document.getElementById("employee_select").value,
 								start: data.start_date[i1],
 								end: data.end_date[i1],
-								url: "http://127.0.0.1:8006/app/booking/" + data.book_id[i1],
+								url: "https://hmws-ei-inva.frappe.cloud/app/booking/" + data.book_id[i1],
 								color: '#ACCBF3',
 								textColor: 'black'
 							};
@@ -1013,7 +1013,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 										title: "Certificate || " + document.getElementById("employee_select").value,
 										start: data.expiry_dates[i1],
 										
-										url: "http://127.0.0.1:8006/app/booking/" + data.document_names[i1],
+										url: "https://hmws-ei-inva.frappe.cloud/app/booking/" + data.document_names[i1],
 										color: 'pink',
 										textColor: 'black'
 									};
@@ -1185,7 +1185,7 @@ function project_data() {
                         title: resp_data.project_name,
                         start: resp_data.expected_start_date,
                         end: resp_data.expected_end_date,
-                        url: "http://127.0.0.1:8006/app/project/" + resp_data.name,
+                        url: "https://hmws-ei-inva.frappe.cloud/app/project/" + resp_data.name,
                         color: '#F5B411',
                         textColor: 'black'
                     };
@@ -1225,7 +1225,7 @@ function selected_project_onload() {
                         title: resp_data.project_name,
                         start: resp_data.expected_start_date,
                         end: resp_data.expected_end_date,
-                        url: "http://127.0.0.1:8006/app/project/" + resp_data.name,
+                        url: "https://hmws-ei-inva.frappe.cloud/app/project/" + resp_data.name,
                         color: '#FFAC33',
                         textColor: 'black'
                     };
@@ -1291,7 +1291,7 @@ function select_job_data() {
                             title:  data.name + " - " + data.project,
                             start: data.exp_start_date,
                             end: data.exp_end_date,
-                            url: "http://127.0.0.1:8006/app/task/" + data.name,
+                            url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
                             color: '#ADD918',
                             textColor: 'black'
                         };
@@ -1324,7 +1324,7 @@ function all_emp_leave() {
                     title: data.employee + " - " + data.name,
                     start: data.from_date,
                     end: data.to_date,
-                    url: "http://127.0.0.1:8006/app/task/" + data.name,
+                    url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
                     color: 'red',
                     textColor: 'black'
                 };
@@ -1367,7 +1367,7 @@ function job_data() {
 						title: data.name + " - " + data.project,
 						start: data.exp_start_date,
 						end: data.exp_end_date,
-						url: "http://127.0.0.1:8006/app/task/" + data.name,
+						url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
 						color: '#A8DB20',
 						textColor: 'black'
 					};
