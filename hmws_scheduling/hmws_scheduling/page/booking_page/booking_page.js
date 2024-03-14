@@ -143,6 +143,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 			},
 			callback: function (r) {
 				let resp_data = r.message;
+				// console.log("helooooooooooooooooooooooooooo", resp_data);
 				console.log(resp_data);
 	
 				let select_div = $("#project_select_Booking");
@@ -151,7 +152,9 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 				resp_data.forEach((data) => {
 					// Check if the status is not equal to "completed"
 					if (data.status !== "Completed") {
-						let option = new Option(data.name, data.name);
+						let concatenatedValue = data.name +""+ " - "+"" + data.project_name;
+						let option = new Option(concatenatedValue, data.name);
+						console.log(option);
 						select_div.append(option);
 					}
 				});
@@ -161,6 +164,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 			},
 		});
 	}
+	
 	
     function frappeProject() {
         frappe.call({
@@ -1948,6 +1952,5 @@ document.head.appendChild(choosencsss);
 	
 	
 }
-
 
 

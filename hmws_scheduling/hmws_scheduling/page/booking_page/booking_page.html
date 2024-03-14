@@ -88,6 +88,9 @@
     list-style-type: none;
     background-color: aliceblue;
   }
+  ul {
+    padding: 8px; /* Remove margin */
+}   
   .temp-container{
     display: block;
   }
@@ -179,7 +182,7 @@
             
             <form style="background-color: #a7c1ea; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px;width: 300px;">
                 <span style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">Booking Form</span>
-                    Project:
+                    Search for Project:
                    <div class="search_select_box">
                         
                         <select class="form-control"  placeholder="Select A Project" style="border-radius: 5px; border: 1px solid red;" id="project_select_Booking" onchange="selected_project()">
@@ -225,7 +228,7 @@
                 <select class="box-css" type="text" placeholder="Select A Project" id="employee_select" onchange="selected_employee()">
                     <option value=""></option>
                 </select>
-                <button onclick="myfunc()" style="margin-top: 10px;" class="box-css">Schedule</button>
+                <button onclick="myfunc()" style="margin-top: 10px;" class="box-css">Submit</button>
                 
             </form>
             
@@ -241,11 +244,11 @@
             <div class="d-flex justify-content-between with_form ">
                 <div class="form-row ">
                     <label for="name">Vehicle:</label>
-                    <input  type="text" id="vehicle" name="vehicle">
+                    <input  type="text" id="vehicle2" name="vehicle">
                 </div>
                 <div class="form-row">
                     <label for="name">Kit:</label>
-                    <input style="width: 100%;" type="text" id="kit" name="kit">
+                    <input style="width: 100%;" type="text" id="kit2" name="kit">
                 </div>
             </div>
             <label for="name">Subtask</label>
