@@ -493,8 +493,13 @@ def change_project_date(event_id, start_date, end_date):
                 if leave_info["leave_id"]:
                     leave_message = f"Employee {emp_id} is on leave during the project period. Leave ID(s): {', '.join(leave_info['leave_id'])}"
                     frappe.msgprint(leave_message)
+                
+        
     else:
         print("There are no tasks linked to the project.")
+
+    
+
 
 
     # Print only the last task name if there are tasks

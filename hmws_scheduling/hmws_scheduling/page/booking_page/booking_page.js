@@ -23,6 +23,7 @@ var initializeCalendar = function (events) {
 			let formatted_end_date = event_end_date.toISOString().slice(0, 10)
 			console.log(formatted_start_date);
 			console.log(formatted_end_date);
+			
 			if(event_backgroundColor=="#ADD918"){
 				event_backgroundColor="Task"
 				console.log(event_backgroundColor)
@@ -34,7 +35,9 @@ var initializeCalendar = function (events) {
 						end_date: formatted_end_date,
 						// exp_end_date:formatted_end_date
 					},
+					
 				})
+				
 			}
 			if(event_backgroundColor=="#FFAC33"){
 				event_backgroundColor="Project"
@@ -164,6 +167,42 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 			},
 		});
 	}
+
+
+	function frappeCreateProject() {
+		frappe.call({
+			method: "frappe.client.get_list",
+			args: {
+				doctype: "Sales Order",
+				fields: ["name", "custom_no_of_asset"],
+			},
+			callback: function (r) {
+				let resp_data = r.message;
+				let select_div = $("#salesOrder");
+	
+				resp_data.forEach((data) => {
+					let concatenatedValue = data.name;
+					let option = new Option(concatenatedValue, data.name);
+					select_div.append(option);
+				});
+	
+				// Trigger Select2 update after adding options
+				select_div.trigger("change");
+	
+				// Add event listener for sales order change
+				select_div.on('change', function() {
+					let selectedSalesOrder = $(this).val();
+					let selectedSalesOrderData = resp_data.find(item => item.name === selectedSalesOrder);
+					if (selectedSalesOrderData) {
+						$("#numberOfAssets").val(selectedSalesOrderData.custom_no_of_asset);
+					} else {
+						$("#numberOfAssets").val(""); // Clear input if no Sales Order is selected
+					}
+				});
+			},
+		});
+	}
+	
 	
 	
     function frappeProject() {
@@ -259,7 +298,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
                     title: data.name + " - " + data.custom_vehicle,
                     start: data.exp_start_date,
                     end: data.exp_end_date,
-                    url: "https://hmws-ei-inva.frappe.cloud/app/task/view/list/" + data.name,
+                    url: "https://hmws-ei-inva.frappe.cloud/app/task/" + data.name,
                     color: '#ADD918',
                     textColor: 'black'
                 };
@@ -341,7 +380,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 	
 									// Call the first function and wait for its completion
 									frappe.call({
-										method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_leave_all",
+										method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.employee_leave_all",
 										args: {
 											custom_employee_values: customEmployeeValues,
 										},
@@ -387,7 +426,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 									// if (customEmployeeValues.includes(data.name)) {
 										// Call the additional function for certificate_on_load
 										frappe.call({
-											method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.certificate_expiry_date",
+											method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.certificate_expiry_date",
 											args: {
 												custom_employee_values: customEmployeeValues,
 											},
@@ -518,7 +557,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 	
 					// After processing all tasks, make the final call to fetch employee_leave_on_load data
 					frappe.call({
-						method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_leave_on_load",
+						method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.employee_leave_on_load",
 						args: {},
 						callback: function (r) {
 							let data = r.message;
@@ -542,7 +581,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 						}
 					});
 					frappe.call({
-						method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.certificate_on_load",
+						method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.certificate_on_load",
 						args: {},
 						callback: function (r) {
 							let data = r.message;
@@ -598,8 +637,10 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 					}
 				},
 				callback: function (r) {
+					console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",r)
 					
 					if (r.message && r.message.length > 0) {
+						
 						let resp_data = r.message[0];
 						let dt = {
 							id:resp_data.name,
@@ -611,6 +652,8 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 							textColor: 'black'
 						};
 						events1.push(dt);
+						console.log(events1,"aaaaaaaaaaaaaaaaaaaaaaaaa	")
+						initializeCalendar(events1); 
 						frappe.call({
 						  method: "frappe.client.get_list",
 						  args: {
@@ -678,12 +721,14 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 							  console.error("Error occurred while fetching task list:", err);
 							  // Handle errors here if needed
 						  }
+						  
 					  });
+					 
 	
 					} else {
 						console.log("No data found for the specified filter.");
 					}
-	
+					
 				},
 			});
 			frappe.call({
@@ -807,7 +852,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 
 	function updateSubTaskField() {
 		frappe.call({
-			method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.get_sub_task",
+			method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.get_sub_task",
 			args: {
 				task: document.getElementById("task").value,
 			},
@@ -836,7 +881,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 	function get_employee() {
 		console.log("get_employee function called");  // Add this line for debugging
 		frappe.call({
-			method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.get_emp_list",
+			method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.get_emp_list",
 			args: {
 				job_role: document.getElementById("job_role").value,
 			},
@@ -880,7 +925,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 
 	// function selected_employee_alll(customEmployeeValues) {
 	// 	frappe.call({
-	// 		method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_leave_all",
+	// 		method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.employee_leave_all",
 	// 		args: {
 	// 			custom_employee_values: customEmployeeValues,
 	// 		},
@@ -918,7 +963,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 	
 	function selected_employee() {
 		frappe.call({
-			method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_leave",
+			method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.employee_leave",
 			args: {
 				emp_id: document.getElementById("employee_select").value,
 				s_dt: document.getElementById("start_date").value,
@@ -957,7 +1002,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 				}
 	
 				frappe.call({
-					method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_booking",
+					method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.employee_booking",
 					args: {
 						emp_id: document.getElementById("employee_select").value,
 						s_dt: document.getElementById("start_date").value,
@@ -965,7 +1010,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 					},
 					callback: function (r) {
 						let data = r.message;
-						console.log("i am aditya")
+						// console.log("i am aditya")
 	
 						for (let i1 = 0; i1 < data.book_id.length; i1++) {
 							let dt1 = {
@@ -996,7 +1041,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 							);
 						}
 						frappe.call({
-							method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.get_expiry_data",
+							method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.get_expiry_data",
 							args: {
 								emp_id: document.getElementById("employee_select").value,
 								s_dt: document.getElementById("start_date").value,
@@ -1049,7 +1094,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 
 
 						frappe.call({
-							method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.get_certificate",
+							method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.get_certificate",
 							args: {
 								emp_id: document.getElementById("employee_select").value,
 								task: document.getElementById("task").value,
@@ -1311,7 +1356,7 @@ function select_job_data() {
 
 function all_emp_leave() {
     frappe.call({
-        method: "hmws_scheduling.hmws_scheduling.page.calendar.booking_page.employee_leave_on_load",
+        method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.employee_leave_on_load",
         args: {},
         callback: function (r) {
             let data = r.message;
@@ -1411,40 +1456,37 @@ function handleFilterChange() {
     var projectField = document.getElementById("projectField");
     var jobField = document.getElementById("jobField");
     var employeeField = document.getElementById("employeeField");
-	var projectField2=document.getElementById("projectField2")
+    var projectField2 = document.getElementById("projectField2");
 
     // Reset visibility for all fields
     projectField.style.display = "none";
     jobField.style.display = "none";
     employeeField.style.display = "none";
-	projectField2.style.display = "none";
-	
+    projectField2.style.display = "none";
+
+    // Clear the calendar if the empty option is selected
+    if (viewBySelect.value === "") {
+        clearCalendar();
+        return;
+    }
 
     // Show the selected field based on the "View By" option
     if (viewBySelect.value === "project") {
         projectField.style.display = "flex";
-        // jobField.style.display = "flex"; // Show job field as well
-        // Additional logic or functions related to the "project" option can be added here
-		// project_data();
-		// frappeProject();
         filter_project();
     } else if (viewBySelect.value === "job") {
-        projectField2.style.display = "flex"; // Show project field as well
+        projectField2.style.display = "flex";
         jobField.style.display = "flex";
-		job_data();
-		
-		// filter_project();
-        // Additional logic or functions related to the "job" option can be added here
+        job_data();
     } else if (viewBySelect.value === "employee") {
         projectField2.style.display = "flex";
         jobField.style.display = "flex";
         employeeField.style.display = "flex";
-		select_emp();
-		// all_emp_leave()
-		// selected_employee_alll();
-        // Additional logic or functions related to the "employee" option can be added here
+        select_emp();
     }
 }
+
+
 
 // Function to hide the additional fields initially
 document.addEventListener("DOMContentLoaded", function () {
@@ -1458,6 +1500,17 @@ document.addEventListener("DOMContentLoaded", function () {
     employeeField.style.display = "none";
 });
 
+
+
+function toggleFormVisibility() {
+	const projectForm = document.getElementById('project_form');
+	// Toggle the visibility of the form
+	if (projectForm.style.display === 'none') {
+		projectForm.style.display = 'block';
+	} else {
+		projectForm.style.display = 'none';
+	}
+}
 
 // Create a script element
 var scriptselect = document.createElement('script');
@@ -1490,22 +1543,30 @@ document.body.appendChild(script12);
 
 
 var choosenjs= document.createElement('script')
-choosenjs.src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js';
+choosenjs.src='https://cdn.jsdelivr.net/npm/@coreui/coreui-pro@5.0.0-rc.2/dist/js/coreui.bundle.min.js';
 document.body.appendChild(choosenjs);
+
+var choosenj1s= document.createElement('script')
+choosenj1s.src='https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0-rc-2/dist/js/coreui.bundle.min.js';
+document.body.appendChild(choosenj1s);
 
 
 
 var choosencsss= document.createElement("link")
-choosencsss.href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css';
+choosencsss.href='https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0-rc-2/dist/css/coreui.min.css';
 document.head.appendChild(choosencsss);
 
+
+function openDocument() {
+	window.open("http://127.0.0.1:8007/app/project/new-project-#####", "_blank");
+}
     let script1 = document.createElement("script");
     script1.innerHTML = `
         // Your script content goes here
 		
         
 		
-
+		${openDocument.toString()}
         ${frappeProject.toString()}
 		${job_data.toString()}
 		${select_job_data.toString()}
@@ -1528,6 +1589,9 @@ document.head.appendChild(choosencsss);
 		${alertmsg.toString()}
 		${frappeTask.toString()}
 		${frappeProject2.toString()}
+		${toggleFormVisibility.toString()}
+		${frappeCreateProject.toString()}
+		
 		task_details();
 		selected_project();
 		frappeProject();
@@ -1536,7 +1600,7 @@ document.head.appendChild(choosencsss);
 		${selected_employee.toString()}
 		// selected_employee_alll();
 		alertmsg();
-		
+		frappeCreateProject();
 		frappeTask();
 		updateSubTaskField();
 		get_employee();
@@ -1933,16 +1997,106 @@ document.head.appendChild(choosencsss);
 					task_details(); // Assuming task_details() is a defined function
 				}
 			});
+			
+		});
+		
+		$(document).ready(function() {
+			$("#myForm").draggable();
+		});
+		
+
+		// //multiselect
+		// $(document).ready(function() {
+        //     // Initialize Select2 for the select field with ID "project_select_for_all"
+        //     $('#project_select_for_all').select2({
+        //         theme: 'bootstrap4', // Optionally, specify the theme
+        //         placeholder: "Select projects", // Placeholder text
+        //         allowClear: true, // Optionally, allow clearing selection
+        //         closeOnSelect: false, // Optionally, keep the dropdown open after selection
+        //     });
+        // });
+		// $(document).ready(function() {
+		// 	$(document).on('click', '.icon-sm', function() {
+		// 		$(".modal-content").hide();
+		// 		console.log("clicked");
+		// 	});
+		// });
+		$(document).ready(function(){
+			// Make the element with class fc-event-draggable draggable
+			$('.fc-event-draggable').draggable({
+				stop: function(event, ui) {
+					console.log('Element was dragged'); // Print 'Element was dragged' to the console when dragging stops
+				}
+			});
+		});
+		
+		$("#projectForm").submit(function(event) {
+			// Prevent default form submission
+			event.preventDefault();
+		
+			// Gather form data
+			let formData = {
+				doctype: "Project",
+				project_name: $("#projectName").val(),
+				sales_order: $("#salesOrder").val(),
+				expected_start_date: $("#startDate").val(),
+				expected_end_date: $("#endDate").val(),
+				custom_vehicles: $("#numberOfAssets").val()
+				// Add other form fields as needed
+			};
+		
+			// Send POST request to create project entry
+			frappe.call({
+				method: "frappe.client.insert",
+				args: {
+					doc: formData
+				},
+				callback: function (r) {
+					// Provide feedback to the user about the success of the operation
+					alert("Project created successfully!");
+					// Hide the project form
+					$("#project_form").hide();
+		
+					// Concatenate project ID and project name
+					let optionText = r.message.name + " - " + formData.project_name;
+		
+					// Append the newly created project to the select element
+					$("#project_select_Booking").append($('<option>', {
+						value: r.message.name, // Assuming the response contains the ID of the newly created project
+						text: optionText, // Concatenated project ID and name as option text
+						selected: true // Select the newly added option
+					}));
+		
+					// Call selected_project function with the newly selected project value
+					selected_project();
+					
+					// Optionally, you can redirect the user to another page or perform any other action
+				},
+				error: function(xhr, status, error) {
+					// Provide feedback to the user about the failure of the operation
+					alert("Failed to create project. Please try again later.");
+				}
+			});
+		});
+		
+		
+		$(document).ready(function() {
+			// Attach click event listener to the close button
+			$("#close_form").click(function() {
+				// Hide the project form
+				$("#project_form").hide();
+			});
 		});
 		
 		
 		
-
+		
 		
 		
 		`;
 
-    setTimeout(() => {
+       
+		setTimeout(() => {
         document.body.appendChild(script1);
     }, 2000);
 
@@ -1952,5 +2106,6 @@ document.head.appendChild(choosencsss);
 	
 	
 }
+
 
 
