@@ -21,9 +21,9 @@ var initializeCalendar = function (events) {
 			let event_backgroundColor=get_event.backgroundColor
 			let formatted_start_date = event_start_date.toISOString().slice(0, 10);
 			let formatted_end_date = event_end_date.toISOString().slice(0, 10)
-			console.log(formatted_start_date);
+			console.log(formatted_start_date,"");
 			console.log(formatted_end_date);
-			
+			openTaskForm(event_id, formatted_start_date, formatted_end_date);
 			if(event_backgroundColor=="#ADD918"){
 				event_backgroundColor="Task"
 				console.log(event_backgroundColor)
@@ -62,7 +62,8 @@ var initializeCalendar = function (events) {
 		  let formatted_start_date = event_start_date.toISOString().slice(0, 10);
 		  let formatted_end_date = event_end_date.toISOString().slice(0, 10)
 		  console.log(formatted_start_date);
-		  console.log(formatted_end_date);
+		  console.log(formatted_end_date,"");
+		  openTaskForm(event_id, formatted_start_date, formatted_end_date);
 		  if(event_backgroundColor=="#ADD918"){
 			  event_backgroundColor="Task"
 			  console.log(event_backgroundColor)
@@ -96,6 +97,100 @@ var initializeCalendar = function (events) {
 
     calendar.render();
 };
+function openTaskForm(event_id, start_date, end_date) {
+    console.log("Opening task form for event ID:", event_id);
+    document.getElementById("Revised_Schedule").style.display = "block";
+
+    frappe.call({
+        method: "frappe.client.get_list",
+        args: {
+            doctype: "Project",
+            fields: ["*"],
+            filters: {
+                name: event_id, // Use event_id as the filter
+            }
+        },
+        callback: function (r) {
+            let resp_data = r.message;
+            console.log("data of box", resp_data);
+            let startdate = resp_data[0].expected_start_date;
+            let enddate = resp_data[0].expected_end_date;
+            document.getElementById("actualStartDate").value = startdate;
+            document.getElementById("actualEndDate").value = enddate;
+        },
+    });
+
+    // Set event ID as the value of the project name input field
+    document.getElementById("project_name").value = event_id;
+
+    frappe.call({
+        method: "frappe.client.get_list",
+        args: {
+            doctype: "Task",
+            fields: ["*"],
+            filters: {
+                project: event_id,
+                parent_task: ""
+            }
+        },
+        callback: function (r) {
+            let resp_data = r.message;
+			console.log("Response data from get_list:", resp_data);
+			var taskNames = resp_data.map(function (task) {
+				return task.name;
+			});
+			console.log(taskNames, "Task Names");
+			console.log(x,"data of taskkmap	")
+            console.log("ccc", resp_data);
+			var filters = {
+				name: ["in", taskNames] // Constructing filter object dynamically
+			};
+			frappe.call({
+				method: "frappe.client.get",
+				args: {
+					doctype: "Task",
+					fields: ["*"],
+					name:taskNames
+				},
+				callback: function (r) {
+					let resp_data = r.message;
+					console.log("Data of all tasks", resp_data);
+				},
+			});
+			
+            // Clear any existing task fields
+            document.getElementById("task_fields").innerHTML = '';
+
+            resp_data.forEach((data) => {
+                if (data.status !== "Completed") {
+                    // Create task input fields
+                    let taskHTML = `
+                        <div style="display: flex; justify-content: space-between;" class="task">
+                            <div>
+                                <label for="task_name_${data.name}">Task Name</label>
+                                <input style="width: 90%;" type="text" id="task_name_${data.name}" name="task_name_${data.name}" value="${data.name}">
+                            </div>
+                            <div>
+                                <label for="start_date_${data.name}">Start Date</label>
+                                <input style="width: 90%;padding: 2px ;" type="date" id="start_date_${data.name}" name="start_date_${data.name}" value="${data.exp_start_date}">
+                            </div>
+                            <div>
+                                <label for="end_date_${data.name}">End Date</label>
+                                <input style="width: 90%;padding: 2px ;" type="date" id="end_date_${data.name}" name="end_date_${data.name}" value="${data.exp_end_date}">
+                            </div>
+                            <div>
+                                <label for="employee_${data.name}">Employee</label>
+                                <input style="width: 90%;" type="text" id="employee_${data.name}" name="employee_${data.name}">
+                            </div>
+                        </div>`;
+                    // Append task HTML to the task_fields div
+                    document.getElementById("task_fields").insertAdjacentHTML('beforeend', taskHTML);
+                }
+            });
+        },
+    });
+}
+
 
 frappe.pages['booking_page'].on_page_load = function(wrapper) {
 
@@ -637,7 +732,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 					}
 				},
 				callback: function (r) {
-					console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",r)
+					// console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",r)
 					
 					if (r.message && r.message.length > 0) {
 						
@@ -1591,7 +1686,7 @@ function openDocument() {
 		${frappeProject2.toString()}
 		${toggleFormVisibility.toString()}
 		${frappeCreateProject.toString()}
-		
+		${openTaskForm.toString()}
 		task_details();
 		selected_project();
 		frappeProject();
@@ -2005,7 +2100,7 @@ function openDocument() {
 		});
 		
 
-		// //multiselect
+		//multiselect
 		// $(document).ready(function() {
         //     // Initialize Select2 for the select field with ID "project_select_for_all"
         //     $('#project_select_for_all').select2({
@@ -2089,7 +2184,13 @@ function openDocument() {
 		});
 		
 		
-		
+		$(document).ready(function() {
+			// Attach click event listener to the close button
+			$("#close_button_project_form").click(function() {
+				// Hide the project form
+				$("#Revised_Schedule").hide();
+			});
+		});
 		
 		
 		

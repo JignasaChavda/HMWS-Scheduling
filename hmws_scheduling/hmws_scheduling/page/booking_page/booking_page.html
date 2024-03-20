@@ -14,7 +14,7 @@
             padding: 0;
         }    */
          /* CSS to hide the element */
-         #project_select_Booking {
+         #project_select_Booking,#Revised_Schedule {
             display: none;
         }
         #task,#vehical,#kit,#sub_task,#job_role,#employee_select{
@@ -186,7 +186,31 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #a7c1ea;
 }
-     
+
+#Revised_Schedule {
+    padding: 20px;
+        background-color: #f5f5f5;
+        /* height: 50%; */
+        border-radius: 8px;
+        display: none; 
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        z-index: 9999; /* Ensure the form appears above all elements */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+#close_button_project_form{
+    background-color: #a7c1ea;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
         
 
     </style>
@@ -382,6 +406,83 @@ button[type="submit"]:hover {
 
                 </form>
             </div>
+
+            
+            <div id="Revised_Schedule">
+                <label for="projectName">Project Details:</label>
+                <form id="Revised_Schedule_form" style="padding: 10px;">
+                    <label for="projectName">Project Name:</label>
+                    <input type="text" id="project_name" name="projectName"><br>
+            
+                    <div style="display: flex; justify-content: space-between;">
+            
+                        <!-- Actual Schedule -->
+                        <div style="width: 48%;">
+                            <label for="actualSchedule">Actual Schedule:</label>
+                            <div id="actualSchedule" class="d-flex justify-content-between with_form">
+                                <div style="width: 48%; margin-right: 5px;">
+                                    <label for="startDate">Start Date:</label>
+                                    <input style="padding: 2px "  type="date" id="actualStartDate" name="actualStartDate">
+                                </div>
+                                <div style="width: 48%; margin-left: 5px;">
+                                    <label for="endDate">End Date:</label>
+                                    <input style="padding: 2px "  type="date" id="actualEndDate" name="actualEndDate">
+                                </div>
+                            </div>
+                        </div>
+            
+                        <!-- Revised Schedule -->
+                        <div style="width: 48%;">
+                            <label for="revisedSchedule">Revised Schedule:</label>
+                            <div id="revisedSchedule" class="d-flex justify-content-between with_form">
+                                <div style="width: 48%; margin-right: 5px;">
+                                    <label for="startDate">Start Date:</label>
+                                    <input style="padding: 2px "  type="date" id="revisedStartDate" name="revisedStartDate">
+                                </div>
+                                <div style="width: 48%; margin-left: 5px;">
+                                    <label for="endDate">End Date:</label>
+                                    <input style="padding: 2px "  type="date" id="revisedEndDate" name="revisedEndDate">
+                                </div>
+                            </div>
+                        </div>
+            
+                    </div>
+                </form>
+
+                <label style="margin-top: 50px;" for="projectName">Task Details:</label>
+                <form id="Revised_Schedule_form" style="padding: 10px;">
+                    <!-- <div style="display: flex; justify-content: space-between;" class="">
+                        <div>
+                            <label for="task_name">Task Name</label>
+                            <input style="width: 90%;" type="text" id="task_name" name="task_name">
+                        </div>
+                        <div>
+                            <label for="start_date">Start Date</label>
+                            <input style="width: 90%;padding: 2px ;" type="date" id="task_start_date" name="start_date">
+                        </div>
+                        <div>
+                            <label for="end_date">End Date</label>
+                            <input style="width: 90%;padding: 2px   ;" type="date" id="task_end_date" name="end_date">
+                        </div>
+                        <div>
+                            <label for="employee">Employee</label>
+                            <input style="width: 90%;" type="text" id="employee" name="employee">
+                        </div>
+                    </div> -->
+                    <div id="task_fields">
+                        <!-- Task Fields will be added here -->
+                    </div>
+                </form>
+                <div class="d-flex justify-content-between ">
+                    <button style="width: 81px;" type="button" id="close_button_project_form" >Close</button>
+                    <!-- Add other form elements as needed -->
+                    <button type="submit">Edit Schedule</button>
+                    </div>
+
+                
+            </div>
+         
+            
         
         
 
