@@ -24,33 +24,33 @@ var initializeCalendar = function (events) {
 			console.log(formatted_start_date,"");
 			console.log(formatted_end_date);
 			openTaskForm(event_id, formatted_start_date, formatted_end_date);
-			if(event_backgroundColor=="#ADD918"){
-				event_backgroundColor="Task"
-				console.log(event_backgroundColor)
-				frappe.call({
-					method:"hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.change_task_date",
-					args: {
-						event_id: event_id,
-						start_date: formatted_start_date,
-						end_date: formatted_end_date,
-						// exp_end_date:formatted_end_date
-					},
+			// if(event_backgroundColor=="#ADD918"){
+			// 	event_backgroundColor="Task"
+			// 	console.log(event_backgroundColor)
+			// 	// frappe.call({
+			// 	// 	method:"hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.change_task_date",
+			// 	// 	args: {
+			// 	// 		event_id: event_id,
+			// 	// 		start_date: formatted_start_date,
+			// 	// 		end_date: formatted_end_date,
+			// 	// 		// exp_end_date:formatted_end_date
+			// 	// 	},
 					
-				})
+			// 	// })
 				
-			}
-			if(event_backgroundColor=="#FFAC33"){
-				event_backgroundColor="Project"
-				console.log(event_backgroundColor)
-				frappe.call({
-				  method:"hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.change_project_date",
-				  args: {
-					  event_id: event_id,
-					  start_date: formatted_start_date,
-					  end_date: formatted_end_date,
-				  },
-			  })
-			}
+			// }
+			// if(event_backgroundColor=="#FFAC33"){
+			// 	event_backgroundColor="Project"
+			// 	console.log(event_backgroundColor)
+			// 	frappe.call({
+			// 	  method:"hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.change_project_date",
+			// 	  args: {
+			// 		  event_id: event_id,
+			// 		  start_date: formatted_start_date,
+			// 		  end_date: formatted_end_date,
+			// 	  },
+			//   })
+			// }
 			
 		  },
 		eventDrop:function(events){
@@ -64,41 +64,44 @@ var initializeCalendar = function (events) {
 		  console.log(formatted_start_date);
 		  console.log(formatted_end_date,"");
 		  openTaskForm(event_id, formatted_start_date, formatted_end_date);
-		  if(event_backgroundColor=="#ADD918"){
-			  event_backgroundColor="Task"
-			  console.log(event_backgroundColor)
-			  frappe.call({
-				  method:"hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.change_task_date",
-				  args: {
-					  event_id: event_id,
-					  start_date: formatted_start_date,
-					  end_date: formatted_end_date,
-				  },
-			  })
-		  }
-		  if(event_backgroundColor=="#FFAC33"){
-			  event_backgroundColor="Project"
-			  console.log(event_backgroundColor)
-			  frappe.call({
-				method:"hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.change_project_date",
-				args: {
-					event_id: event_id,
-					start_date: formatted_start_date,
-					end_date: formatted_end_date,
-				},
-			})
-		  }
+		//   if(event_backgroundColor=="#ADD918"){
+		// 	  event_backgroundColor="Task"
+		// 	  console.log(event_backgroundColor)
+		// 	  frappe.call({
+		// 		  method:"hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.change_task_date",
+		// 		  args: {
+		// 			  event_id: event_id,
+		// 			  start_date: formatted_start_date,
+		// 			  end_date: formatted_end_date,
+		// 		  },
+		// 	  })
+		//   }
+		//   if(event_backgroundColor=="#FFAC33"){
+		// 	  event_backgroundColor="Project"
+		// 	  console.log(event_backgroundColor)
+		// 	  frappe.call({
+		// 		method:"hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.change_project_date",
+		// 		args: {
+		// 			event_id: event_id,
+		// 			start_date: formatted_start_date,
+		// 			end_date: formatted_end_date,
+		// 		},
+		// 	})
+		//   }
 		  
 		  
 
 		}
+		
 	}) // Use the events parameter here
   
 
     calendar.render();
 };
-function openTaskForm(event_id, start_date, end_date) {
+function openTaskForm(event_id, formatted_start_date, formatted_end_date) {
     console.log("Opening task form for event ID:", event_id);
+	console.log("Opening task form for event ID:", formatted_start_date);
+	console.log("Opening task form for event ID:", formatted_end_date);
     document.getElementById("Revised_Schedule").style.display = "block";
 
     frappe.call({
@@ -115,11 +118,14 @@ function openTaskForm(event_id, start_date, end_date) {
             console.log("data of box", resp_data);
             let startdate = resp_data[0].expected_start_date;
             let enddate = resp_data[0].expected_end_date;
-            document.getElementById("actualStartDate").value = startdate;
-            document.getElementById("actualEndDate").value = enddate;
+			document.getElementById("actualStartDate").value = startdate;
+			document.getElementById("actualEndDate").value = enddate;
+          
         },
     });
 
+	document.getElementById("revisedStartDate").value = formatted_start_date;
+	document.getElementById("revisedEndDate").value = formatted_end_date;
     // Set event ID as the value of the project name input field
     document.getElementById("project_name").value = event_id;
 
@@ -135,58 +141,79 @@ function openTaskForm(event_id, start_date, end_date) {
         },
         callback: function (r) {
             let resp_data = r.message;
-			console.log("Response data from get_list:", resp_data);
-			var taskNames = resp_data.map(function (task) {
-				return task.name;
-			});
-			console.log(taskNames, "Task Names");
+			var x=resp_data.map(function (task) {
+				return task.name
+			})
 			console.log(x,"data of taskkmap	")
             console.log("ccc", resp_data);
-			var filters = {
-				name: ["in", taskNames] // Constructing filter object dynamically
-			};
-			frappe.call({
-				method: "frappe.client.get",
-				args: {
-					doctype: "Task",
-					fields: ["*"],
-					name:taskNames
-				},
-				callback: function (r) {
-					let resp_data = r.message;
-					console.log("Data of all tasks", resp_data);
-				},
+			// frappe.call({})
+			resp_data.forEach((task) => {
+				frappe.call({
+					method: "frappe.client.get",
+					args: {
+						doctype: "Task",
+						name: task.name,
+						fields: ["*"],
+					},
+					callback: function (taskResponse) {
+						// console.log(taskResponse, "response of task");
+			
+						// Access child table data
+						var child_table_data = taskResponse.message.depends_on;
+						console.log(child_table_data, "");
+			
+						// Initialize an array to store custom_employee values
+						let customEmployees = [];
+			
+						// Loop through each child table data
+						child_table_data.forEach(function (child) {
+							// Access individual child table entries
+							// console.log(child.custom_employee, "Individual child table entry");
+			
+							// Add custom_employee value to the array
+							customEmployees.push(child.custom_employee);
+						});
+			
+						// Update the value of custom_employee in the respective task HTML
+						let employeeInput = document.getElementById(`employee_${task.name}`);
+						if (employeeInput) {
+							// Set the value as a comma-separated string
+							employeeInput.value = customEmployees.join(', ');
+						}
+					}
+				});
 			});
+			
 			
             // Clear any existing task fields
             document.getElementById("task_fields").innerHTML = '';
 
-            resp_data.forEach((data) => {
-                if (data.status !== "Completed") {
-                    // Create task input fields
-                    let taskHTML = `
-                        <div style="display: flex; justify-content: space-between;" class="task">
-                            <div>
-                                <label for="task_name_${data.name}">Task Name</label>
-                                <input style="width: 90%;" type="text" id="task_name_${data.name}" name="task_name_${data.name}" value="${data.name}">
-                            </div>
-                            <div>
-                                <label for="start_date_${data.name}">Start Date</label>
-                                <input style="width: 90%;padding: 2px ;" type="date" id="start_date_${data.name}" name="start_date_${data.name}" value="${data.exp_start_date}">
-                            </div>
-                            <div>
-                                <label for="end_date_${data.name}">End Date</label>
-                                <input style="width: 90%;padding: 2px ;" type="date" id="end_date_${data.name}" name="end_date_${data.name}" value="${data.exp_end_date}">
-                            </div>
-                            <div>
-                                <label for="employee_${data.name}">Employee</label>
-                                <input style="width: 90%;" type="text" id="employee_${data.name}" name="employee_${data.name}">
-                            </div>
-                        </div>`;
-                    // Append task HTML to the task_fields div
-                    document.getElementById("task_fields").insertAdjacentHTML('beforeend', taskHTML);
-                }
-            });
+			resp_data.forEach((data) => {
+				if (data.status !== "Completed") {
+					// Create task input fields
+					let taskHTML = `
+						<div style="display: flex; justify-content: space-between;" class="task">
+							<div>
+								<label for="task_name_${data.name}">Task Name</label>
+								<input style="width: 90%;" type="text" id="task_name_${data.name}" name="task_name_${data.name}" value="${data.name}">
+							</div>
+							<div>
+								<label for="start_date_${data.name}">Start Date</label>
+								<input style="width: 90%;padding: 2px ;" type="date" id="start_date_${data.name}" name="start_date_${data.name}" value="${data.exp_start_date}">
+							</div>
+							<div>
+								<label for="end_date_${data.name}">End Date</label>
+								<input style="width: 90%;padding: 2px ;" type="date" id="end_date_${data.name}" name="end_date_${data.name}" value="${data.exp_end_date}">
+							</div>
+							<div>
+								<label for="employee_${data.name}">Employee</label>
+								<input style="width: 90%;" type="text" id="employee_${data.name}" name="employee_${data.name}">
+							</div>
+						</div>`;
+					// Append task HTML to the task_fields div
+					document.getElementById("task_fields").insertAdjacentHTML('beforeend', taskHTML);
+				}
+			});
         },
     });
 }
@@ -715,7 +742,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 		let selectemp = document.getElementById("project_select_Booking").value;
 		val = selectemp;
 		events1 = [];
-
+		
 
 		$.ajax({
 			
@@ -732,7 +759,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 					}
 				},
 				callback: function (r) {
-					// console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",r)
+					console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",r)
 					
 					if (r.message && r.message.length > 0) {
 						
@@ -744,7 +771,9 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 							end: resp_data.expected_end_date,
 							url: "https://hmws-ei-inva.frappe.cloud/app/project/" + resp_data.name,
 							color: '#FFAC33',
-							textColor: 'black'
+							textColor: 'black',
+							
+							
 						};
 						events1.push(dt);
 						console.log(events1,"aaaaaaaaaaaaaaaaaaaaaaaaa	")
@@ -1121,7 +1150,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 	
 						// show_calander();
 						initializeCalendar(events1);
-	
+						
 						if (data.book_id[0]) {
 							frappe.confirm(
 								'Employee ' + document.getElementById("employee_select").value + ' already booked from date ' + data.start_date[0] + " to " + data.end_date[0],
@@ -2192,6 +2221,7 @@ function openDocument() {
 			});
 		});
 		
+
 		
 		
 		`;
