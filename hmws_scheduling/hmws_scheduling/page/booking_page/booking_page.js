@@ -1682,7 +1682,7 @@ document.head.appendChild(choosencsss);
 
 
 function openDocument() {
-	window.open("http://127.0.0.1:8007/app/project/new-project-#####", "_blank");
+	window.open("https://hmws-ei-inva.frappe.cloud/app/project/new-project", "_blank");
 }
     let script1 = document.createElement("script");
     script1.innerHTML = `
