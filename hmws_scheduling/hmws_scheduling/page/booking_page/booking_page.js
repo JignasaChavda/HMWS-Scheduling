@@ -1041,10 +1041,17 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 				}
 			},
 			callback: function (r) {
-				console.log(r);
+				if (r.message) {
+					// Value added successfully
+					frappe.msgprint("Booking Record Created successfully");
+				} else {
+					// Failed to add value
+					frappe.msgprint_alert("Failed to add value: " + r.exc);
+				}
 			}
 		});
 	}
+	
 
 
 
