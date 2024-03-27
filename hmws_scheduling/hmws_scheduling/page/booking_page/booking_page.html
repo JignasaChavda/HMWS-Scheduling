@@ -337,7 +337,7 @@ button[type="submit"]:hover {
                 <select class="box-css" type="text" placeholder="Select A Project" id="employee_select" onchange="selected_employee()">
                     <option value=""></option>
                 </select>
-                <button onclick="myfunc()" style="margin-top: 10px;" class="box-css">Schedule</button>
+                <button type="button" onclick="myfunc()" style="margin-top: 10px;" class="box-css">Schedule</button>
                 
             </form>
             
@@ -378,15 +378,13 @@ button[type="submit"]:hover {
                 <form id="projectForm">
                     <label for="projectName">Project Name:</label>
                     <input type="text" id="projectName" name="projectName" ><br>
-                    
-                    <label>Sales Order:</label>
                     <select id="salesOrder" name="salesOrder">
                         <!-- Placeholder option -->
                         <option value=""></option>
                     </select>
                     <br>
-                    <!-- <label for="job">Job:</label>
-                    <input type="text" id="job" name="job"> -->
+                    <label for="job">Job:</label>
+                    <input type="text" id="job" name="job">
                     <div class="d-flex justify-content-between with_form">
                         <div style="width: 50%; margin-right:5px ;">
                             <label for="startDate">Start Date:</label>
@@ -505,6 +503,8 @@ button[type="submit"]:hover {
     
 </body>
 </html>
+
+
 
 
 

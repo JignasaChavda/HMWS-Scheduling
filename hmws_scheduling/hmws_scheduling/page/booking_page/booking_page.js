@@ -742,7 +742,9 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 		let selectemp = document.getElementById("project_select_Booking").value;
 		val = selectemp;
 		events1 = [];
-		
+		document.getElementById("vehical").innerHTML = "";
+		document.getElementById("kit").innerHTML = "";
+	
 
 		$.ajax({
 			
@@ -759,7 +761,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 					}
 				},
 				callback: function (r) {
-					console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",r)
+					// console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",r)
 					
 					if (r.message && r.message.length > 0) {
 						
@@ -882,23 +884,20 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 				},
 			});
 			frappe.call({
-				method:"frappe.client.get_list",
-				args:{
-					doctype:"Vehicle",
-					fields:["name"],
-					filters:{
-						custom_project:document.getElementById("project_select_Booking").value,
-						// custom_status:"Not Assigned"
-						
+				method: "frappe.client.get_list",
+				args: {
+					doctype: "Vehicle",
+					fields: ["name"],
+					filters: {
+						custom_project: selectemp
 					}
 				},
-				callback:function(r){
+				callback: function (r) {
 					let vehical_data = r.message;
-					
 					let select_veh = document.getElementById("vehical");
-
+					select_veh.innerHTML = ""; // Clear previous options
+	
 					vehical_data.forEach((data) => {
-						// Check if the status is not equal to "completed"
 						if (data.status !== "Completed") {
 							let option = document.createElement("option");
 							option.text = data.name;
@@ -908,22 +907,20 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 				}
 			});
 			frappe.call({
-				method:"frappe.client.get_list",
-				args:{
-					doctype:"Kit",
-					fields:["name"],
-					filters:{
-						project:document.getElementById("project_select_Booking").value,
-						// status:"Not Assigned"
+				method: "frappe.client.get_list",
+				args: {
+					doctype: "Serial No",
+					fields: ["name"],
+					filters: {
+						custom_project: selectemp
 					}
 				},
-				callback:function(r){
+				callback: function (r) {
 					let kit_data = r.message;
-					
 					let select_kit = document.getElementById("kit");
-
+					select_kit.innerHTML = ""; // Clear previous options
+	
 					kit_data.forEach((data) => {
-						// Check if the status is not equal to "completed"
 						if (data.status !== "Completed") {
 							let option = document.createElement("option");
 							option.text = data.name;
@@ -932,7 +929,6 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 					});
 				}
 			});
-			
 		} else {
 			console.log("Selectdiv is empty or undefined. Please check the value.");
 		}
@@ -973,7 +969,6 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 							});
     }
 	
-
 	function updateSubTaskField() {
 		frappe.call({
 			method: "hmws_scheduling.hmws_scheduling.page.booking_page.booking_page.get_sub_task",
@@ -990,17 +985,24 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 				sub.innerHTML = "";
 	
 				for (let i1 = 0; i1 < kit_data[0].length; i1++) {
+					let option1 = document.createElement("option");
+					option1.text = kit_data[2][i1];
+					sub.appendChild(option1);
+
 					let option = document.createElement("option");
 					option.text = kit_data[0][i1];
 					select_kit.appendChild(option);
 	
-					let option1 = document.createElement("option");
-					option1.text = kit_data[2][i1];
-					sub.appendChild(option1);
+					
+	
+					// Print index of subtask in the console
+					// console.log("Index of subtask:", i1);
 				}
 			}
 		});
 	}
+	
+
 
 	function get_employee() {
 		console.log("get_employee function called");  // Add this line for debugging
@@ -2042,7 +2044,6 @@ function openDocument() {
 			});
 		});
 
-
 		$(document).ready(function() {
 			console.log("Document ready function fired.");
 	
@@ -2081,6 +2082,7 @@ function openDocument() {
 				}
 			});
 		});
+
 		
 
 		
@@ -2237,6 +2239,8 @@ function openDocument() {
 	
 	
 }
+
+
 
 
 
