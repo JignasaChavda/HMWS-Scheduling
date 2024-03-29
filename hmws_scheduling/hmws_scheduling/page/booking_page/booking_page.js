@@ -1043,7 +1043,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
 			callback: function (r) {
 				if (r.message) {
 					// Value added successfully
-					frappe.msgprint("Booking Record Created successfully");
+					frappe.msgprint("Booking Created successfully");
 				} else {
 					// Failed to add value
 					frappe.msgprint_alert("Failed to add value: " + r.exc);
@@ -1645,49 +1645,11 @@ function toggleFormVisibility() {
 	}
 }
 
-// Create a script element
-var scriptselect = document.createElement('script');
 
-// Set the src attribute to the jQuery CDN
-scriptselect.src = 'https://code.jquery.com/jquery-3.6.4.min.js';
-
-// Append the script element to the document's head
-document.head.appendChild(scriptselect);
-
-var scriptselect2 = document.createElement('script');
-
-// Set the src attribute to the jQuery CDN
-scriptselect2.src = "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js";
-
-// Append the script element to the document's head
-document.head.appendChild(scriptselect2);
-
-
-
-
-
-var script12 = document.createElement('script');
-
-// Set the src attribute to the jQuery CDN
-script12.src = 'https://code.jquery.com/jquery-3.6.4.min.js';
-
-// Append the script element to the document's head
-document.body.appendChild(script12);
-
-
-var choosenjs= document.createElement('script')
-choosenjs.src='https://cdn.jsdelivr.net/npm/@coreui/coreui-pro@5.0.0-rc.2/dist/js/coreui.bundle.min.js';
-document.body.appendChild(choosenjs);
-
-var choosenj1s= document.createElement('script')
-choosenj1s.src='https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0-rc-2/dist/js/coreui.bundle.min.js';
-document.body.appendChild(choosenj1s);
-
-
-
-var choosencsss= document.createElement("link")
-choosencsss.href='https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.0-rc-2/dist/css/coreui.min.css';
-document.head.appendChild(choosencsss);
+var select2Script = document.createElement('script');
+select2Script.src = 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js';
+select2Script.async = true; // or select2Script.defer = true;
+document.head.appendChild(select2Script);
 
 
 function openDocument() {
@@ -1741,6 +1703,7 @@ function openDocument() {
 		selected_project_onload()
 		// project_data();
 		// filter_project();
+		
 
 		$(document).ready(function () {
 			var formVisible = false;
@@ -2231,7 +2194,16 @@ function openDocument() {
 		});
 		
 
+
+		// Assuming close button has class 'closeButton'
+document.querySelector('.btn-modal-close').addEventListener('click', function() {
+	console.log("hello")
+    // Call CoreUI Pro method to close the message
+    CoreUI.closeMessage();
+});
+
 		
+	
 		
 		`;
 
@@ -2246,7 +2218,6 @@ function openDocument() {
 	
 	
 }
-
 
 
 
