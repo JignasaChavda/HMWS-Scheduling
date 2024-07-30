@@ -228,7 +228,7 @@ frappe.pages['booking_page'].on_page_load = function(wrapper) {
     });
 	
     const githubFileUrl =
-        "https://api.github.com/repos/Dhruvipatel12/full_calendar/contents/index.global.min.js";
+        "/assets/hmws_scheduling/js/index.global.min.js";
     loadGitHubFile(githubFileUrl);
 	var events = [];
   

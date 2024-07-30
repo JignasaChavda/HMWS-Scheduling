@@ -12,7 +12,7 @@ app_license = "mit"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/hmws_scheduling/css/hmws_scheduling.css"
 # app_include_js = "/assets/hmws_scheduling/js/hmws_scheduling.js"
-
+app_include_js = "/assets/hmws_scheduling/public/js/index.global.min.js"
 # include js, css files in header of web template
 # web_include_css = "/assets/hmws_scheduling/css/hmws_scheduling.css"
 # web_include_js = "/assets/hmws_scheduling/js/hmws_scheduling.js"
