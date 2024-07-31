@@ -184,7 +184,7 @@ function openTaskForm(event_id, formatted_start_date, formatted_end_date) {
 				});
 			});
 			
-			
+			 
             // Clear any existing task fields
             document.getElementById("task_fields").innerHTML = '';
 
