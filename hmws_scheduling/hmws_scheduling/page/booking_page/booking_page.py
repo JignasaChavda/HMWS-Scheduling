@@ -1,6 +1,7 @@
 import frappe
 from datetime import datetime
 
+# To fetch the data
 @frappe.whitelist()
 def get_sub_task(task):
     task_data=frappe.db.sql("select task,custom_job_role,custom_employee from `tabTask Depends On` where parent=%s",task,as_dict=True)
